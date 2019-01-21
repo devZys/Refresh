@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FFFF4081</color>
+    <color name="gary">#EFEFEF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFA300</color>
+    <color name="myyellow">#FFA102</color>
+    <color name="textGray">#717171</color>
+    <color name="textqiangray">#e3e3e3</color>
+    <color name="lineGray">#F5F5F5</color>
+    <color name="CircleGray">#D9D9D9</color>
+    <color name="TitleBlack">#565656</color>
+    <color name="ScanleBackground">#E35D4C</color>
+    <color name="PlanGrayText">#7F7F7F</color>
+
+    <color name="translucent">#10FFB71C</color>
+    <color name="translucentTxt">#50FFB71C</color>
+
+    <color name="heart_default">#E48674</color>
+    <color name="fense">#F75680</color>
+    <color name="red_dark">#b12f3e</color>
+    <color name="top_fade">#46000000</color>
+    <color name="black">#080808</color>
+    <color name="transparent">#00000000</color>
+    <color name="gray_light">#F5F5F5</color>
+
+    <color name="bmigreen">#89CA35</color>
+    <color name="bmiblue">#7ECEF4</color>
+    <color name="bmiyellow">#FFF45C</color>
+    <color name="bmiyellow2">#F39800</color>
+    <color name="bmired">#FF0000</color>
+</resources>
