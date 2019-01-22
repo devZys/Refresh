@@ -26,16 +26,16 @@ public class H5WebviewUtils {
         webSetting.setBuiltInZoomControls(true);
         webSetting.setUseWideViewPort(true);
         webSetting.setSupportMultipleWindows(false);
-//        webSetting.setLoadWithOverviewMode(true);
+        webSetting.setLoadWithOverviewMode(true);
         webSetting.setAppCacheEnabled(true);
-//        webSetting.setDatabaseEnabled(true);
+        webSetting.setDatabaseEnabled(true);
         webSetting.setDomStorageEnabled(true);
         webSetting.setJavaScriptEnabled(true);
         webSetting.setGeolocationEnabled(true);
         webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
-//        webSetting.setAppCachePath(activity.getDir("appcache", 0).getPath());
-//        webSetting.setDatabasePath(activity.getDir("databases", 0).getPath());
-//        webSetting.setGeolocationDatabasePath(BaseApplication.getInstance().getDir("geolocation", 0).getPath());
+        webSetting.setAppCachePath(activity.getDir("appcache", 0).getPath());
+        webSetting.setDatabasePath(activity.getDir("databases", 0).getPath());
+        webSetting.setGeolocationDatabasePath(BaseApplication.getInstance().getDir("geolocation", 0).getPath());
         webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
         webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSetting.setLoadsImagesAutomatically(true);    //支持自动加载图片

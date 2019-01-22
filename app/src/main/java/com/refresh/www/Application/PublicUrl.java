@@ -8,7 +8,7 @@ public class PublicUrl {
     public static String OperatingSystem = "Android";
 
     public static boolean LogState = true;
-//    public static String HomeUrl = "http://www.booker.com";
-    public static String HomeUrl = "http://www.baidu.com";
+    public static String HomeUrl = "https://signin.booker.com/auth/i/login?";
+    public static String BobTan = "https://app.secure-booker.com/App/SpaAdmin/Customers/EditCustomer/Summary.aspx?CustomerID=75204056";
 
 }

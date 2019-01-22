@@ -21,7 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/gary"
+        android:gravity="center"
         >
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="定位指定人"
+            android:id="@+id/button4"
+            android:onClick="ClickPeopleMethod"
+            />
     </LinearLayout>
 </LinearLayout>
