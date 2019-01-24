@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.refresh.www.Activity.LoginActivity;
+import com.refresh.www.Activity.MainActivity;
 import com.refresh.www.BmobObject.PicInfo;
 import com.refresh.www.OtherUtils.HttpxUtils.ImagexUtils;
 import com.refresh.www.R;
@@ -20,10 +20,10 @@ import java.util.List;
  * Created by yy on 2019/1/23.
  */
 public class PicAdapter extends BaseAdapter {
-    private LoginActivity mContext = null;
+    private MainActivity mContext = null;
     private List<PicInfo> picInfoList;
 
-    public PicAdapter(LoginActivity loginActivity) {
+    public PicAdapter(MainActivity loginActivity) {
         mContext = loginActivity;
     }
 

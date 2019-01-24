@@ -12,6 +12,8 @@ import com.tencent.smtt.sdk.TbsListener;
 
 import org.xutils.x;
 
+import cn.bmob.v3.Bmob;
+
 /**
  * Created by yy on 2017/9/25.
  */
@@ -23,6 +25,7 @@ public class BaseApplication extends Application {
         instance = this;
         x.Ext.init(this);
         X5Init();
+        BmobInit();
     }
 
     public static BaseApplication getInstance(){
@@ -59,6 +62,10 @@ public class BaseApplication extends Application {
         });
         //x5内核初始化接口
         QbSdk.initX5Environment(getApplicationContext(), cb);
+    }
+
+    private void BmobInit(){
+        Bmob.initialize(this, "48616d9dc7838d737049b2c36d43268a");
     }
 
     //隐藏虚拟按键：

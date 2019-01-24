@@ -57,7 +57,7 @@ public class HeadImageUtil {
 
     /*********************************************************************************************************
      * * 函数名称: void cropRawPhoto(Uri uri)
-     * * 功能说明：  裁剪原始的图片
+     * * 功能说明： 裁剪原始的图片
      ********************************************************************************************************/
     public static void cropRawPhoto(Activity activity, Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");

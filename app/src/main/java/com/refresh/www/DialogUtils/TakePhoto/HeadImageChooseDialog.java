@@ -12,7 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.refresh.www.Activity.LoginActivity;
+import com.refresh.www.Activity.MainActivity;
 import com.refresh.www.OtherUtils.TimeUtils.TimeUtils;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
@@ -72,7 +72,7 @@ public class HeadImageChooseDialog {
      * * 函数名称: void setImageToHeadView(Intent intent)
      * * 功能说明：提取保存裁剪之后的图片数据，并设置头像部分的View
      ********************************************************************************************/
-    public static void setImageToHeadView(LoginActivity activity, Intent intent) {
+    public static void setImageToHeadView(MainActivity activity, Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             Bitmap photo = extras.getParcelable("data");
@@ -81,43 +81,7 @@ public class HeadImageChooseDialog {
         }
     }
 
-    private static void LoadingFacePhotoMethod(final LoginActivity activity,File photofile) {
-//        BmobFile bmobFile = new BmobFile(photofile);
-//        UserInfo userInfo = new UserInfo();
-//        //注意：不能调用gameScore.setObjectId("")方法
-//        userInfo.setPhoneNumber("98674625");
-//        userInfo.setCustormerID("10010");
-//        userInfo.setUserName("Hari");
-//        userInfo.setAvatar(bmobFile);
-//        userInfo.save(new SaveListener<String>() {
-//
-//            @Override
-//            public void done(String objectId, BmobException e) {
-//                PopMessageUtil.CloseLoading();
-//                if (e == null) {
-//                    PopMessageUtil.showToastShort("创建数据成功：" + objectId);
-//                } else {
-//                    PopMessageUtil.Log("失败：" + e.getMessage() + "," + e.getErrorCode());
-//                }
-//            }
-//        });
-//        bmobFile.uploadblock(new UploadFileListener() {
-//            @Override
-//            public void done(BmobException e) {
-//                if(e==null)
-//                    PopMessageUtil.showToastShort("上传文件成功:");
-//                else
-//                    PopMessageUtil.showToastShort("上传文件失败：" + e.getMessage());
-//            }
-//            @Override
-//            public void onProgress(Integer value) {
-//                // 返回的上传进度（百分比）
-//                PopMessageUtil.Log(String.valueOf(value));
-//            }
-//        });
-
-
-//        String picPath = "/storage/emulated/0/WDhorse/0123110650.jpg";
+    private static void LoadingFacePhotoMethod(final MainActivity activity,File photofile) {
         final BmobFile bmobFile = new BmobFile(photofile);
         bmobFile.uploadblock(new UploadFileListener() {
             @Override

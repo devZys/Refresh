@@ -119,6 +119,14 @@
                 android:onClick="ClickCheckUserPhoneMethod"
                 />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加照片"
+                android:id="@+id/button5"
+                android:onClick="ClickTakePhotoMethod"
+                />
+
         </LinearLayout>
 
         <LinearLayout
@@ -182,13 +190,6 @@
                     android:id="@+id/customerID_txt"
                     android:layout_marginLeft="10dp" />
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="添加照片"
-                    android:id="@+id/button5"
-                    android:onClick="ClickTakePhotoMethod"
-                    />
             </LinearLayout>
 
             <com.refresh.www.UiShowUtils.HorizontalListView

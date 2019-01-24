@@ -19,17 +19,61 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:background="@color/gary"
-        android:gravity="center"
         >
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="PhoneNumber："
+                android:layout_marginLeft="20dp"
+                android:id="@+id/textView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="999"
+                android:textSize="25dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/phoneNumber_txt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Total："
+                android:layout_marginLeft="40dp"
+                android:id="@+id/textView2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="999"
+                android:textSize="25dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/picNumber_txt" />
+
+        </LinearLayout>
+
+        <com.refresh.www.UiShowUtils.HorizontalListView
+            android:id="@+id/pic_listview"
+            android:layout_marginTop="1dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="定位指定人"
-            android:id="@+id/button4"
-            android:onClick="ClickPeopleMethod"
-            />
+            android:layout_height="200dp"
+            android:divider="#00000000"
+            android:dividerHeight="0dip"
+            ></com.refresh.www.UiShowUtils.HorizontalListView>
+
     </LinearLayout>
 </LinearLayout>
