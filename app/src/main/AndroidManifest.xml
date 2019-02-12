@@ -28,12 +28,13 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:name=".Application.BaseApplication"
-        tools:replace="android:icon"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/MyTheme">
+        android:theme="@style/MyTheme"
+        tools:replace="android:allowBackup,android:icon,android:label,android:supportsRtl,android:theme"
+        >
 
         <activity
             android:name=".Activity.MainActivity"
@@ -46,11 +47,14 @@
             </intent-filter>
         </activity>
 
+        <!--<activity-->
+            <!--android:name=".Activity.LoginActivity"-->
+            <!--android:screenOrientation="landscape"-->
+            <!--android:theme="@style/MyTheme" />-->
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".Activity.DetectLoginActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/MyTheme" />
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.refresh.www.BmobContentProvider">

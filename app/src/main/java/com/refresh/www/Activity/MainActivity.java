@@ -1,6 +1,7 @@
 package com.refresh.www.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -115,7 +116,7 @@ public class MainActivity extends Activity {
                         PopMessageUtil.Log("查询成功!" + list.size() + "条数据");
                         USERINFO = list.get(0);
                         phoneNumber_txt.setText(USERINFO.getPhoneNumber());
-                        picNumber_txt.setText(USERINFO.getPicList().size()+"pcs");
+                        picNumber_txt.setText(USERINFO.getPicList().size() + "pcs");
                         picAdapter.UpdataPicInfo(USERINFO.getPicList());
                     } else {
                         PopMessageUtil.showToastShort("查询不到该号码会员");
@@ -145,5 +146,10 @@ public class MainActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void ClickVipIdentification(View view){
+        Intent intent = new Intent(MainActivity.this, DetectLoginActivity.class);
+        startActivity(intent);
     }
 }

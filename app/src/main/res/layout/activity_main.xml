@@ -16,6 +16,15 @@
 
     </com.tencent.smtt.sdk.WebView>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="会员识别"
+        android:id="@+id/button"
+        android:layout_weight="1"
+        android:onClick="ClickVipIdentification"
+        />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
