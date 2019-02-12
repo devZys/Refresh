@@ -3,6 +3,7 @@ package com.refresh.www.Activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.refresh.www.Adapter.PicAdapter;
@@ -30,6 +31,7 @@ import cn.bmob.v3.listener.UpdateListener;
 public class MainActivity extends Activity {
     private com.tencent.smtt.sdk.WebView webView;
     //*********照片墙**********//
+    private LinearLayout userInfo_layout;
     private TextView phoneNumber_txt,picNumber_txt;
     private HorizontalListView picListview;
     private PicAdapter picAdapter;
@@ -41,11 +43,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         InitUi();
         InitH5Web();
-
-        CheckUserPhoneNumber("98674625");
+//        CheckUserPhoneNumber("98674625");
     }
 
     private void InitUi() {
+        userInfo_layout = (LinearLayout) findViewById(R.id.userInfo_layout);
         webView = (com.tencent.smtt.sdk.WebView) findViewById(R.id.webView);
         phoneNumber_txt = (TextView) findViewById(R.id.phoneNumber_txt);
         picNumber_txt   = (TextView) findViewById(R.id.picNumber_txt);

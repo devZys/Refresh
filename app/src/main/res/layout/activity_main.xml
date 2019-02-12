@@ -21,6 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@color/gary"
+        android:id="@+id/userInfo_layout"
+        android:visibility="gone"
         >
 
         <LinearLayout
