@@ -168,7 +168,6 @@ public class DetectLoginActivity extends AppCompatActivity {
                                 mGoodDetect = true;
                             else
                                 mGoodDetect = false;
-
                         }
                     }
                 } else if (retCode == 1) {
@@ -318,10 +317,8 @@ public class DetectLoginActivity extends AppCompatActivity {
                     mSuccessView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 else
                     mSuccessView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                // mSuccessView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-        // mProgress = (ProgressBar) findViewById(R.id.progress_bar);
         init();
     }
 
@@ -336,10 +333,8 @@ public class DetectLoginActivity extends AppCompatActivity {
         rootView.addView(mWaveview, waveParams);
         mWaveHelper = new WaveHelper(mWaveview);
 
-        mWaveview.setShapeType(WaveView.ShapeType.CIRCLE);
-        mWaveview.setWaveColor(
-                Color.parseColor("#28FFFFFF"),
-                Color.parseColor("#3cFFFFFF"));
+        mWaveview.setShapeType(WaveView.ShapeType.SQUARE);
+        mWaveview.setWaveColor(Color.parseColor("#2800A3E0"), Color.parseColor("#3c00A3E0"));
 
         mBorderColor = Color.parseColor("#28f16d7a");
         mWaveview.setBorder(mBorderWidth, mBorderColor);

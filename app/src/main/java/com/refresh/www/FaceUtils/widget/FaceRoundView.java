@@ -35,9 +35,6 @@ public class FaceRoundView extends View {
     public static final int PATH_SMALL_SPACE = 12;
     public static final int PATH_WIDTH = 4;
 
-    //  public static final int COLOR_BG = Color.parseColor("#2F2F33");
-    //  public static final int COLOR_RECT = Color.parseColor("#FFFFFF");
-    //  public static final int COLOR_ROUND = Color.parseColor("#FFA800");
     public static final int COLOR_BG = Color.parseColor("#FFFFFF");
     public static final int COLOR_RECT = Color.parseColor("#FFFFFF");
     public static final int COLOR_ROUND = Color.parseColor("#FFA800");
@@ -117,7 +114,6 @@ public class FaceRoundView extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         float canvasWidth = right - left;
         float canvasHeight = bottom - top;
-
         float x = 0;
         float y = 0;
         float r = 0;
@@ -131,7 +127,7 @@ public class FaceRoundView extends View {
             r = (canvasHeight / 2) - ((canvasHeight / 2) * WIDTH_SPACE_RATIO);
         }
 
-
+        r = r*3;
         if (mFaceRect == null) {
             mFaceRect = new Rect((int) (x - r),
                     (int) (y - r),

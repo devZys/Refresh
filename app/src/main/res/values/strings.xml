@@ -3,8 +3,8 @@
 
     <string name="detect_no_face">未检测到人脸</string>
     <string name="detect_face_in">把脸移入框内</string>
-    <string name="detect_zoom_in">手机拿近一点</string>
-    <string name="detect_zoom_out">手机拿远一点</string>
+    <string name="detect_zoom_in">请靠近一点</string>
+    <string name="detect_zoom_out">请靠远一点</string>
     <string name="detect_head_up">头抬高些</string>
     <string name="detect_head_down">头放低些</string>
     <string name="detect_head_left">向左调整下头部角度</string>
@@ -18,8 +18,8 @@
     <string name="detect_right_contour">右脸颊有遮挡</string>
     <string name="detect_chin_contour">下巴有遮挡</string>
     <string name="detect_low_light">光线再亮些</string>
-    <string name="detect_keep">请握稳手机，视线平视手机</string>
-    <string name="detect_standard">请正对手机</string>
+    <string name="detect_keep">请握稳手机，视线平视屏幕</string>
+    <string name="detect_standard">请正对屏幕</string>
     <string name="detect_timeout">检测超时</string>
     <string name="liveness_eye">眨眨眼</string>
     <string name="liveness_eye_left">请眨眨左边眼睛</string>

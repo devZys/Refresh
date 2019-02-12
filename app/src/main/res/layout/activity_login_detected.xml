@@ -9,12 +9,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/preview_margin">
+        >
 
         <com.baidu.aip.face.TexturePreviewView
             android:id="@+id/preview_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </RelativeLayout>
 
 
@@ -23,11 +24,14 @@
         android:id="@+id/camera_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff" />
+        android:background="#ffffff" >
+
+    </FrameLayout>
     <com.refresh.www.FaceUtils.widget.FaceRoundView
         android:id="@+id/rect_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
     <TextView
         android:id="@+id/name_text_view"
@@ -56,5 +60,17 @@
             android:scaleType="fitCenter"
             android:layout_width="160dp"
             android:layout_height="160dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/facelogo_imageView"
+        android:layout_gravity="center"
+        android:src="@drawable/facelogo"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        />
 
 </RelativeLayout>
