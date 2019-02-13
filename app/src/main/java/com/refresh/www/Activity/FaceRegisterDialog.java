@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
+import com.refresh.www.FaceUtils.https.FaceHttpsRequest;
 import com.refresh.www.FaceUtils.utils.ImageSaveUtil;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
@@ -22,10 +23,11 @@ public class FaceRegisterDialog {
     private static Window window;
     private static Button btnDialogConfirm, btnDialogCancle;
     private static CircleImageView avatar_iv;
-    private static String facePath,faceType;
+    private static String facePath,CustmerID;
 
 
-    public static void showRegisterDialog(MainActivity context,String CustmerID) {
+    public static void showRegisterDialog(MainActivity context,String CUSTMERID) {
+        CustmerID = CUSTMERID;
         activity = context;
         View view = activity.getLayoutInflater().inflate(R.layout.dialog_face_bind, null);
         dialog = new Dialog(activity, R.style.transparentFrameWindowStyle);
@@ -45,7 +47,7 @@ public class FaceRegisterDialog {
 
     private static Bitmap mHeadBmp;
     private static void ShowHeadPic() {
-        facePath = ImageSaveUtil.loadCameraBitmapPath(activity, "head_tmp.jpg");
+        facePath = ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg");
         if (mHeadBmp != null) {
             mHeadBmp.recycle();
         }
@@ -65,7 +67,7 @@ public class FaceRegisterDialog {
         @Override
         public void onClick(View v) {
             dialog.dismiss();
-//            FaceRegisterRequest.HttpRegisterByUid(activity, facePath, chinaUid,faceType);
+            FaceHttpsRequest.HttpRegisterByFace(activity, facePath, CustmerID);
         }
     }
     /********************************************************************

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.refresh.www.Activity.MainActivity;
-import com.refresh.www.BmobObject.PicInfo;
+import com.refresh.www.BmobObject.Object.PicInfo;
 import com.refresh.www.OtherUtils.HttpxUtils.ImagexUtils;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;

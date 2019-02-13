@@ -10,8 +10,6 @@
 //import android.widget.TextView;
 //
 //import com.refresh.www.Adapter.PicAdapter;
-//import com.refresh.www.BmobObject.PicInfo;
-//import com.refresh.www.BmobObject.UserInfo;
 //import com.refresh.www.DialogUtils.TakePhoto.HeadImageChooseDialog;
 //import com.refresh.www.DialogUtils.TakePhoto.HeadImageUtil;
 //import com.refresh.www.R;

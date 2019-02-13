@@ -17,7 +17,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -38,6 +40,7 @@ import com.baidu.idl.facesdk.FaceInfo;
 import com.refresh.www.Application.APIService;
 import com.refresh.www.FaceUtils.exception.FaceError;
 import com.refresh.www.FaceUtils.model.FaceModel;
+import com.refresh.www.FaceUtils.model.RegResult;
 import com.refresh.www.FaceUtils.utils.ImageSaveUtil;
 import com.refresh.www.FaceUtils.utils.ImageUtil;
 import com.refresh.www.FaceUtils.utils.OnResultListener;
@@ -48,6 +51,10 @@ import com.refresh.www.FaceUtils.widget.WaveView;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
 import com.refresh.www.UiShowUtils.SwitchUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -429,9 +436,9 @@ public class DetectLoginActivity extends AppCompatActivity {
                 ImageUtil.resize(face, file, 200, 200);
                 ImageSaveUtil.saveCameraBitmap(DetectLoginActivity.this, face, "head_tmp.jpg");
 
-                APIService.getInstance().identify(new OnResultListener<FaceModel>() {
+                APIService.getInstance().identify(new OnResultListener<RegResult>() {
                     @Override
-                    public void onResult(FaceModel result) {
+                    public void onResult(RegResult result) {
                         deleteFace(file);
                         mUploading = false;
                         if (result == null) {
@@ -439,33 +446,55 @@ public class DetectLoginActivity extends AppCompatActivity {
                                 PopMessageUtil.showToastShort("人脸识别不通过，请关联会员");
                                 PopMessageUtil.Log("================1");
                                 CloseWaveFaceRecognition();
-                                //关联会员信息
-//                                JudgeBindOrUnbindFaceMethod();
+                                SwitchUtil.switchActivity(DetectLoginActivity.this,MainActivity.class).switchToFinishWithValue(RESULT_FIRST_USER);
+                                finish();
                             }
                             return;
                         } else {
-                            PopMessageUtil.Log("校验得分="+result.getScore()+"活体值="+result.getFaceliveness());
                             PopMessageUtil.Log("================2");
-                            if (result.getScore() > 80 && result.getFaceliveness() > 0.834963 ) {
-                                PopMessageUtil.Log("UID=" + result.getUid() + "|" + result.getUserInfo());
+                            String res = result.getJsonRes();
+                            PopMessageUtil.Log("res is:" + res);
+                            double maxScore = 0;
+                            String userId = "";
+                            String userInfo = "";
+                            if (TextUtils.isEmpty(res)) return;
+                            JSONObject obj = null;
+                            try {
+                                obj = new JSONObject(res);
+                                JSONObject resObj = obj.optJSONObject("result");
+                                if (resObj != null) {
+                                    JSONArray resArray = resObj.optJSONArray("user_list");
+                                    int size = resArray.length();
+                                    for (int i = 0; i < size; i++) {
+                                        JSONObject s = (JSONObject) resArray.get(i);
+                                        if (s != null) {
+                                            double score = s.getDouble("score");
+                                            if (score > maxScore) {
+                                                maxScore = score;
+                                                userId = s.getString("user_id");
+                                                userInfo = s.getString("user_info");
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (JSONException e) {e.printStackTrace();}
+                            //========用户人脸识别判断===========//
+                            if (maxScore > 80 ) {
+                                PopMessageUtil.Log("ObjectId=" + userId + "|CustormerId=" + userInfo);
                                 mDetectTime = false;
                                 CloseWaveFaceRecognition();
                                 //识别成功 定位到用户信息
-
+                                SwitchUtil.switchActivity(DetectLoginActivity.this,MainActivity.class)
+                                        .addString("ObjectId",userId)
+                                        .addString("CustormerId",userInfo)
+                                        .switchToFinishWithValue(RESULT_OK);
                                 return;
                             } else {
                                 if (mDetectCount >= 3 ) {
                                     mDetectTime = false;
                                     CloseWaveFaceRecognition();
-                                    if(result.getFaceliveness()<0.8349) {
-                                        PopMessageUtil.showToastLong("面部活体检测失败,请重新识别");
-                                        SwitchUtil.FinishActivity(DetectLoginActivity.this);
-                                    }
-                                    else {
-                                        PopMessageUtil.showToastShort("人脸识别不通过，请绑定");
-                                        //关联会员信息
-//                                        JudgeBindOrUnbindFaceMethod();
-                                    }
+                                    PopMessageUtil.showToastLong("面部检测失败,请重新识别");
+                                    SwitchUtil.FinishActivity(DetectLoginActivity.this);
                                 }
                                 return;
                             }
@@ -481,11 +510,7 @@ public class DetectLoginActivity extends AppCompatActivity {
                         if (error.getErrorCode() == 216611) {
                             CloseWaveFaceRecognition();
                             mDetectTime = false;
-                            Intent intent = new Intent();
-                            intent.putExtra("login_success", false);
-                            intent.putExtra("error_code", error.getErrorCode());
-                            intent.putExtra("error_msg", error.getErrorMessage());
-                            setResult(Activity.RESULT_OK, intent);
+                            PopMessageUtil.showToastLong("面部检测失败,错误码=216611");
                             SwitchUtil.FinishActivity(DetectLoginActivity.this);
                             return;
                         }

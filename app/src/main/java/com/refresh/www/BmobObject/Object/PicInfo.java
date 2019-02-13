@@ -1,4 +1,4 @@
-package com.refresh.www.BmobObject;
+package com.refresh.www.BmobObject.Object;
 
 /**
  * Created by yy on 2019/1/23.

@@ -1,4 +1,4 @@
-package com.refresh.www.BmobObject;
+package com.refresh.www.BmobObject.Object;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;

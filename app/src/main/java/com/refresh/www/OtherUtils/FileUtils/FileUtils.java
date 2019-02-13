@@ -32,4 +32,9 @@ public class FileUtils {
             PopMessageUtil.Log("文件存在===");
         return MY_PATH;                                                                             //sdcard/0/idami.store/
     }
+
+    public static void deleteFace(File file) {
+        if (file != null && file.exists())
+            file.delete();
+    }
 }

@@ -30,73 +30,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:visibility="gone"
         >
 
     </com.tencent.smtt.sdk.WebView>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/gary"
         android:id="@+id/userInfo_layout"
+        android:gravity="center_vertical"
         android:visibility="gone"
         >
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="PhoneNumber："
-                android:layout_marginLeft="20dp"
-                android:id="@+id/textView" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="999"
-                android:textSize="25dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/phoneNumber_txt" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Total："
-                android:layout_marginLeft="40dp"
-                android:id="@+id/textView2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="999"
-                android:textSize="25dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/picNumber_txt" />
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0"
+            android:textSize="25dp"
+            android:id="@+id/picNumber_txt"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            />
 
         <com.refresh.www.UiShowUtils.HorizontalListView
             android:id="@+id/pic_listview"
-            android:layout_marginTop="1dp"
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:divider="#00000000"
             android:dividerHeight="0dip"
             ></com.refresh.www.UiShowUtils.HorizontalListView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -104,6 +72,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:id="@+id/MainFunction_layout"
+        android:visibility="gone"
         >
 
         <LinearLayout

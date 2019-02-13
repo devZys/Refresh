@@ -3,6 +3,9 @@
  */
 package com.refresh.www.FaceUtils.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 /**
  * Created by wangtianfei01 on 17/4/6.
  */
@@ -85,5 +88,22 @@ public class Base64 {
         }
         codes['+'] = 62;
         codes['/'] = 63;
+    }
+
+    /**
+     * encodeBase64File:(将文件转成base64 字符串). <br/>
+     * @author guhaizhou@126.com
+     * @param path 文件路径
+     * @return
+     * @throws Exception
+     * @since JDK 1.6
+     */
+    public static String encodeBase64File(String path) throws Exception {
+        File file = new File(path);
+        FileInputStream inputFile = new FileInputStream(file);
+        byte[] buffer = new byte[(int)file.length()];
+        inputFile.read(buffer);
+        inputFile.close();
+        return android.util.Base64.encodeToString(buffer, android.util.Base64.DEFAULT);
     }
 }

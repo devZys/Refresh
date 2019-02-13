@@ -33,10 +33,6 @@ public class ImageSaveUtil {
 
         try {
             if (isMemeryOk(context)) {
-//                File file = new File(context.getFilesDir(), filename);
-               // if (file.exists()) {
-                //    file.delete();
-              //  }
                 File file = new File(FileUtils.getFilePath() + filename);//将要保存图片的路径
 //                PopMessageUtil.Log("图片存储地址=" + FileUtils.getFilePath() + TimeUtils.getNowTime() + ".jpg");
                 fileOS = new FileOutputStream(file);
@@ -61,8 +57,8 @@ public class ImageSaveUtil {
         return fullPath;
     }
 
-    public static String loadCameraBitmapPath(Context context, String filename) {
-        String filePath = context.getFilesDir() + File.separator + filename;
+    public static String loadCameraBitmapPath(String filename) {
+        String filePath = FileUtils.getFilePath() + File.separator + filename;
         File path = new File(filePath);
         if (!path.exists()) {
             filePath = "";
