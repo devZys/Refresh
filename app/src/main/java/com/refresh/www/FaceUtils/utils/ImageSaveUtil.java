@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
+import com.refresh.www.OtherUtils.FileUtils.FileUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,12 +30,15 @@ public class ImageSaveUtil {
         }
         String fullPath = "";
         FileOutputStream fileOS = null;
+
         try {
             if (isMemeryOk(context)) {
-                File file = new File(context.getFilesDir(), filename);
+//                File file = new File(context.getFilesDir(), filename);
                // if (file.exists()) {
                 //    file.delete();
               //  }
+                File file = new File(FileUtils.getFilePath() + filename);//将要保存图片的路径
+//                PopMessageUtil.Log("图片存储地址=" + FileUtils.getFilePath() + TimeUtils.getNowTime() + ".jpg");
                 fileOS = new FileOutputStream(file);
                 Uri.fromFile(file);
                 image.compress(Bitmap.CompressFormat.JPEG, 100, fileOS);

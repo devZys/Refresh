@@ -11,7 +11,7 @@ import java.io.File;
  */
 public class FileUtils {
     private final static String TAG = FileUtils.class.getSimpleName();
-    public final static String FirstFolder = "WDhorse";                                               //一级目录名称
+    public final static String FirstFolder = "Refresh";                                               //一级目录名称
     private final static String MY_PATH = Environment.getExternalStorageDirectory()
             + File.separator + FirstFolder + File.separator;
 

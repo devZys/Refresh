@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.refresh.www.FaceUtils.exception.FaceError;
 import com.refresh.www.FaceUtils.model.RegResult;
+import com.refresh.www.UiShowUtils.PopMessageUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +17,7 @@ public class RegResultParser implements Parser<RegResult> {
 
     @Override
     public RegResult parse(String json) throws FaceError {
-        Log.e("xx", "oarse:" + json);
+        PopMessageUtil.Log("oarse:" + json);
         try {
             JSONObject jsonObject = new JSONObject(json);
 

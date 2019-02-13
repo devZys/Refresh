@@ -31,4 +31,9 @@
     <color name="bmiyellow">#FFF45C</color>
     <color name="bmiyellow2">#F39800</color>
     <color name="bmired">#FF0000</color>
+
+    <color name="titleGreen">#4DCD70</color>
+    <color name="darkRed">#D92E30</color>
+    <color name="gray_very_light">#DDDDDD</color>
+    <color name="graygreen">#47B018</color>
 </resources>

@@ -17,16 +17,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.aip.FaceSDKManager;
 import com.baidu.aip.ImageFrame;
@@ -40,7 +37,7 @@ import com.baidu.aip.face.camera.PermissionCallback;
 import com.baidu.idl.facesdk.FaceInfo;
 import com.refresh.www.Application.APIService;
 import com.refresh.www.FaceUtils.exception.FaceError;
-import com.refresh.www.FaceUtils.model.RegResult;
+import com.refresh.www.FaceUtils.model.FaceModel;
 import com.refresh.www.FaceUtils.utils.ImageSaveUtil;
 import com.refresh.www.FaceUtils.utils.ImageUtil;
 import com.refresh.www.FaceUtils.utils.OnResultListener;
@@ -50,10 +47,7 @@ import com.refresh.www.FaceUtils.widget.WaveHelper;
 import com.refresh.www.FaceUtils.widget.WaveView;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.refresh.www.UiShowUtils.SwitchUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -129,79 +123,8 @@ public class DetectLoginActivity extends AppCompatActivity {
             @Override
             public void onDetectFace(final int retCode, FaceInfo[] infos, ImageFrame frame) {
                 if (mUploading) return;
-                String str = "";
-                if (retCode == 0) {
-                    if (infos != null && infos[0] != null) {
-                        FaceInfo info = infos[0];
-                        boolean distance = false;
-                        if (info != null && frame != null) {
-                            if (info.mWidth >= (0.9 * frame.getWidth())) {
-                                distance = false;
-                                str = getResources().getString(R.string.detect_zoom_out);
-                            } else if (info.mWidth <= 0.4 * frame.getWidth()) {
-                                distance = false;
-                                str = getResources().getString(R.string.detect_zoom_in);
-                            } else
-                                distance = true;
-                        }
-                        boolean headUpDown;
-                        if (info != null) {
-                            if (info.headPose[0] >= ANGLE) {
-                                headUpDown = false;
-                                str = getResources().getString(R.string.detect_head_up);
-                            } else if (info.headPose[0] <= -ANGLE) {
-                                headUpDown = false;
-                                str = getResources().getString(R.string.detect_head_down);
-                            } else
-                                headUpDown = true;
-
-                            boolean headLeftRight;
-                            if (info.headPose[1] >= ANGLE) {
-                                headLeftRight = false;
-                                str = getResources().getString(R.string.detect_head_left);
-                            } else if (info.headPose[1] <= -ANGLE) {
-                                headLeftRight = false;
-                                str = getResources().getString(R.string.detect_head_right);
-                            } else
-                                headLeftRight = true;
-                            if (distance && headUpDown && headLeftRight)
-                                mGoodDetect = true;
-                            else
-                                mGoodDetect = false;
-                        }
-                    }
-                } else if (retCode == 1) {
-                    str = getResources().getString(R.string.detect_head_up);
-                } else if (retCode == 2) {
-                    str = getResources().getString(R.string.detect_head_down);
-                } else if (retCode == 3) {
-                    str = getResources().getString(R.string.detect_head_left);
-                } else if (retCode == 4) {
-                    str = getResources().getString(R.string.detect_head_right);
-                } else if (retCode == 5) {
-                    str = getResources().getString(R.string.detect_low_light);
-                } else if (retCode == 6) {
-                    str = getResources().getString(R.string.detect_face_in);
-                } else if (retCode == 7) {
-                    str = getResources().getString(R.string.detect_face_in);
-                } else if (retCode == 10) {
-                    str = getResources().getString(R.string.detect_keep);
-                } else if (retCode == 11) {
-                    str = getResources().getString(R.string.detect_occ_right_eye);
-                } else if (retCode == 12) {
-                    str = getResources().getString(R.string.detect_occ_left_eye);
-                } else if (retCode == 13) {
-                    str = getResources().getString(R.string.detect_occ_nose);
-                } else if (retCode == 14) {
-                    str = getResources().getString(R.string.detect_occ_mouth);
-                } else if (retCode == 15) {
-                    str = getResources().getString(R.string.detect_right_contour);
-                } else if (retCode == 16) {
-                    str = getResources().getString(R.string.detect_left_contour);
-                } else if (retCode == 17) {
-                    str = getResources().getString(R.string.detect_chin_contour);
-                }
-
+                String str = DealReturnCode(retCode, infos, frame);
+                //-----处理人脸数据-----//
                 boolean faceChanged = true;
                 if (infos != null && infos[0] != null) {
                     PopMessageUtil.Log("face id is:" + infos[0].face_id);
@@ -234,7 +157,7 @@ public class DetectLoginActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if ((System.currentTimeMillis() - mLastTipsTime) > 1000) {
+                        if ((System.currentTimeMillis() - mLastTipsTime) > 500) {
                             nameTextView.setText(mCurTips);
                             mLastTipsTime = System.currentTimeMillis();
                         }
@@ -320,6 +243,82 @@ public class DetectLoginActivity extends AppCompatActivity {
             }
         });
         init();
+    }
+
+    private String DealReturnCode(int retCode, FaceInfo[] infos, ImageFrame frame) {
+        String str = "";
+        if (retCode == 0) {
+            if (infos != null && infos[0] != null) {
+                FaceInfo info = infos[0];
+                boolean distance = false;
+                if (info != null && frame != null) {
+                    if (info.mWidth >= (0.9 * frame.getWidth())) {
+                        distance = false;
+                        str = getResources().getString(R.string.detect_zoom_out);
+                    } else if (info.mWidth <= 0.4 * frame.getWidth()) {
+                        distance = false;
+                        str = getResources().getString(R.string.detect_zoom_in);
+                    } else
+                        distance = true;
+                }
+                boolean headUpDown;
+                if (info != null) {
+                    if (info.headPose[0] >= ANGLE) {
+                        headUpDown = false;
+                        str = getResources().getString(R.string.detect_head_up);
+                    } else if (info.headPose[0] <= -ANGLE) {
+                        headUpDown = false;
+                        str = getResources().getString(R.string.detect_head_down);
+                    } else
+                        headUpDown = true;
+
+                    boolean headLeftRight;
+                    if (info.headPose[1] >= ANGLE) {
+                        headLeftRight = false;
+                        str = getResources().getString(R.string.detect_head_left);
+                    } else if (info.headPose[1] <= -ANGLE) {
+                        headLeftRight = false;
+                        str = getResources().getString(R.string.detect_head_right);
+                    } else
+                        headLeftRight = true;
+                    if (distance && headUpDown && headLeftRight)
+                        mGoodDetect = true;
+                    else
+                        mGoodDetect = false;
+                }
+            }
+        } else if (retCode == 1) {
+            str = getResources().getString(R.string.detect_head_up);
+        } else if (retCode == 2) {
+            str = getResources().getString(R.string.detect_head_down);
+        } else if (retCode == 3) {
+            str = getResources().getString(R.string.detect_head_left);
+        } else if (retCode == 4) {
+            str = getResources().getString(R.string.detect_head_right);
+        } else if (retCode == 5) {
+            str = getResources().getString(R.string.detect_low_light);
+        } else if (retCode == 6) {
+            str = getResources().getString(R.string.detect_face_in);
+        } else if (retCode == 7) {
+            str = getResources().getString(R.string.detect_face_in);
+        } else if (retCode == 10) {
+            str = getResources().getString(R.string.detect_keep);
+        } else if (retCode == 11) {
+            str = getResources().getString(R.string.detect_occ_right_eye);
+        } else if (retCode == 12) {
+            str = getResources().getString(R.string.detect_occ_left_eye);
+        } else if (retCode == 13) {
+            str = getResources().getString(R.string.detect_occ_nose);
+        } else if (retCode == 14) {
+            str = getResources().getString(R.string.detect_occ_mouth);
+        } else if (retCode == 15) {
+            str = getResources().getString(R.string.detect_right_contour);
+        } else if (retCode == 16) {
+            str = getResources().getString(R.string.detect_left_contour);
+        } else if (retCode == 17) {
+            str = getResources().getString(R.string.detect_chin_contour);
+        }
+        return str;
     }
 
     private void initWaveview(Rect rect) {
@@ -420,12 +419,8 @@ public class DetectLoginActivity extends AppCompatActivity {
      * @param model
      */
     private void upload(FaceFilter.TrackedModel model) {
-        if (mUploading) {
-            PopMessageUtil.Log("is uploading");
-            return;
-        }
+        if (mUploading) return;
         mUploading = true;
-
         if (model.getEvent() != FaceFilter.Event.OnLeave) {
             mDetectCount++;
             try {
@@ -434,104 +429,80 @@ public class DetectLoginActivity extends AppCompatActivity {
                 ImageUtil.resize(face, file, 200, 200);
                 ImageSaveUtil.saveCameraBitmap(DetectLoginActivity.this, face, "head_tmp.jpg");
 
-                APIService.getInstance().identify(new OnResultListener<RegResult>() {
+                APIService.getInstance().identify(new OnResultListener<FaceModel>() {
                     @Override
-                    public void onResult(RegResult result) {
+                    public void onResult(FaceModel result) {
                         deleteFace(file);
+                        mUploading = false;
                         if (result == null) {
-                            mUploading = false;
                             if (mDetectCount >= 3) {
-                                PopMessageUtil.showToastShort("人脸校验不通过,请确认是否已注册");
-                                finish();
+                                PopMessageUtil.showToastShort("人脸识别不通过，请关联会员");
+                                PopMessageUtil.Log("================1");
+                                CloseWaveFaceRecognition();
+                                //关联会员信息
+//                                JudgeBindOrUnbindFaceMethod();
                             }
-                            return;
-                        }
-
-                        String res = result.getJsonRes();
-                        PopMessageUtil.Log("res is:" + res);
-                        double maxScore = 0;
-                        String userId = "";
-                        String userInfo = "";
-                        if (TextUtils.isEmpty(res)) {
-                            return;
-                        }
-                        JSONObject obj = null;
-                        try {
-                            obj = new JSONObject(res);
-                            JSONObject resObj = obj.optJSONObject("result");
-                            if (resObj != null) {
-                                JSONArray resArray = resObj.optJSONArray("user_list");
-                                int size = resArray.length();
-
-
-                                for (int i = 0; i < size; i++) {
-                                    JSONObject s = (JSONObject) resArray.get(i);
-                                    if (s != null) {
-                                        double score = s.getDouble("score");
-                                        if (score > maxScore) {
-                                            maxScore = score;
-                                            userId = s.getString("user_id");
-                                            userInfo = s.getString("user_info");
-                                        }
-                                    }
-                                }
-                            }
-
-                        } catch (JSONException e) {e.printStackTrace();}
-                        if (maxScore > 80) {
-                            PopMessageUtil.Log("onResult ok");
-                            mDetectTime = false;
-//                            Intent intent = new Intent(DetectLoginActivity.this, LoginResultActivity.class);
-//                            intent.putExtra("login_success", true);
-//                            intent.putExtra("user_info", userInfo);
-//                            intent.putExtra("uid", userId);
-//                            intent.putExtra("score", maxScore);
-//                            startActivity(intent);
-//                            finish();
-                            PopMessageUtil.Log("User_info="+userInfo+"|Uid="+userId+"|score="+maxScore);
-                            PopMessageUtil.showToastShort("会员识别成功!");
-                            finish();
-//                            //活体识别验证工作
-//                            Intent intent = new Intent(DetectLoginActivity.this, FaceDetectActivity.class);
-//                            startActivityForResult(intent, REQUEST_CODE);
                             return;
                         } else {
-                            PopMessageUtil.Log("onResult fail");
-                            if (mDetectCount >= 3) {
+                            PopMessageUtil.Log("校验得分="+result.getScore()+"活体值="+result.getFaceliveness());
+                            PopMessageUtil.Log("================2");
+                            if (result.getScore() > 80 && result.getFaceliveness() > 0.834963 ) {
+                                PopMessageUtil.Log("UID=" + result.getUid() + "|" + result.getUserInfo());
                                 mDetectTime = false;
-                                PopMessageUtil.showToastShort("人脸校验不通过,请确认是否已注册");
-                                finish();
+                                CloseWaveFaceRecognition();
+                                //识别成功 定位到用户信息
+
+                                return;
+                            } else {
+                                if (mDetectCount >= 3 ) {
+                                    mDetectTime = false;
+                                    CloseWaveFaceRecognition();
+                                    if(result.getFaceliveness()<0.8349) {
+                                        PopMessageUtil.showToastLong("面部活体检测失败,请重新识别");
+                                        SwitchUtil.FinishActivity(DetectLoginActivity.this);
+                                    }
+                                    else {
+                                        PopMessageUtil.showToastShort("人脸识别不通过，请绑定");
+                                        //关联会员信息
+//                                        JudgeBindOrUnbindFaceMethod();
+                                    }
+                                }
                                 return;
                             }
-
                         }
-                        mUploading = false;
                     }
 
                     @Override
                     public void onError(FaceError error) {
                         error.printStackTrace();
                         deleteFace(file);
-
                         mUploading = false;
+
                         if (error.getErrorCode() == 216611) {
+                            CloseWaveFaceRecognition();
                             mDetectTime = false;
                             Intent intent = new Intent();
                             intent.putExtra("login_success", false);
                             intent.putExtra("error_code", error.getErrorCode());
                             intent.putExtra("error_msg", error.getErrorMessage());
                             setResult(Activity.RESULT_OK, intent);
-                            finish();
+                            SwitchUtil.FinishActivity(DetectLoginActivity.this);
                             return;
                         }
 
                         if (mDetectCount >= 3) {
                             mDetectTime = false;
-                            if (error.getErrorCode() == 10000)
+                            CloseWaveFaceRecognition();
+                            if (error.getErrorCode() == 10000) {
+                                PopMessageUtil.Log("================3");
                                 PopMessageUtil.showToastShort("人脸校验不通过,请检查网络后重试");
-                            else
-                                PopMessageUtil.showToastShort( "人脸校验不通过");
-                            finish();
+                                SwitchUtil.switchActivity(DetectLoginActivity.this,MainActivity.class).switchToFinish();
+                            }
+                            else {
+                                PopMessageUtil.Log("================4");
+                                PopMessageUtil.showToastShort("人脸校验不通过");
+                                SwitchUtil.switchActivity(DetectLoginActivity.this,MainActivity.class).switchToFinishWithValue(RESULT_FIRST_USER);
+                            }
                             return;
                         }
                     }
@@ -547,6 +518,17 @@ public class DetectLoginActivity extends AppCompatActivity {
             mUploading = false;
         }
     }
+
+    private void CloseWaveFaceRecognition(){
+        faceDetectManager.stop();
+        mDetectStoped = true;
+        onRefreshSuccessView(false);
+        if (mWaveview != null) {
+            mWaveview.setVisibility(View.GONE);
+            mWaveHelper.cancel();
+        }
+    }
+
 
     private void showProgressBar(final boolean show) {
         runOnUiThread(new Runnable() {

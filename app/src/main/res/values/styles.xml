@@ -28,4 +28,9 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <!--dialog-->
+    <style name="transparentFrameWindowStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/selector_dialog</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

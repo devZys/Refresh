@@ -9,8 +9,10 @@ public class PublicUrl {
 
     public static boolean LogState = true;
     public static String HomeUrl = "https://signin.booker.com/auth/i/login?";
-    public static String BobTan = "https://app.secure-booker.com/App/SpaAdmin/Customers/EditCustomer/Summary.aspx?CustomerID=75204056";
-
+    public static String SearchCustomersUrl = "https://app.secure-booker.com/App/SpaAdmin/Customers/SearchCustomers.aspx";
+    public static String ChooseShopUrl = "https://app.secure-booker.com/App/BrandAdmin/Spas/SearchSpas.aspx";
+    public static String FindCustomerIDUrl = "https://app.secure-booker.com/App/SpaAdmin/Customers/EditCustomer/Summary.aspx?CustomerID=";
+    public static String CalendarUrl = "https://app.secure-booker.com/App/SpaAdmin/Appointments/Calendar.aspx";
     //=================人脸识别=================//
     public static String apiKey = "GlujiTqgKtUzZg6PIaa7Qfke";
     public static String secretKey = "dxE3P6Ev65L3CvdFalM3YQka9xesUS2n";

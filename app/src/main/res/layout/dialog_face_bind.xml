@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:background="#00000000"
+    android:gravity="center"
+    android:orientation="vertical">
+    <!--top-->
+    <FrameLayout
+        android:id="@+id/flTitle"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#00000000"
+        android:layout_marginTop="50dp"
+        >
+
+        <TextView
+            android:id="@+id/tvRouterDialog"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/tv_common_dialog_top" />
+        <!--img-->
+        <LinearLayout
+            android:id="@+id/llRouterImg"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginLeft="10dp"
+            android:background="#00000000"
+            android:gravity="center"
+            android:weightSum="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar_iv"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/loading"
+                 />
+        </LinearLayout>
+    </FrameLayout>
+
+    <View
+        android:id="@+id/viewLong"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/llRouterName"
+        android:background="@color/gray_very_light" />
+    <!--router name-->
+    <LinearLayout
+        android:id="@+id/llRouterName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/flTitle"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="30dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="是否绑定该会员？"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+    <!--cancle confirm-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewLong"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancle"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_btn_common_cancle"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="取消" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="45dp"
+            android:background="@color/gray_very_light" />
+
+        <Button
+            android:id="@+id/btnConfirm"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_btn_common_confirm"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="绑定" />
+
+    </LinearLayout>
+</RelativeLayout>
