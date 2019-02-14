@@ -67,7 +67,7 @@ public class FaceRegisterDialog {
         @Override
         public void onClick(View v) {
             dialog.dismiss();
-            FaceHttpsRequest.HttpRegisterByFace(activity, facePath, CustmerID);
+            FaceHttpsRequest.HttpRegisterByFace(activity,CustmerID);
         }
     }
 

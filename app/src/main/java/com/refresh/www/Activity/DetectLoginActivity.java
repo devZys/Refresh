@@ -493,8 +493,9 @@ public class DetectLoginActivity extends AppCompatActivity {
                                 if (mDetectCount >= 3 ) {
                                     mDetectTime = false;
                                     CloseWaveFaceRecognition();
-                                    PopMessageUtil.showToastLong("面部检测失败,请重新识别");
-                                    SwitchUtil.FinishActivity(DetectLoginActivity.this);
+                                    PopMessageUtil.showToastShort("人脸识别未找到该会员，请关联会员！");
+                                    SwitchUtil.switchActivity(DetectLoginActivity.this,MainActivity.class).switchToFinishWithValue(RESULT_FIRST_USER);
+                                    finish();
                                 }
                                 return;
                             }

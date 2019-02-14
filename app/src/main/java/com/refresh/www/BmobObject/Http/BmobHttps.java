@@ -1,6 +1,5 @@
 package com.refresh.www.BmobObject.Http;
 
-import android.app.Activity;
 import android.view.View;
 
 import com.refresh.www.Activity.MainActivity;
@@ -9,7 +8,6 @@ import com.refresh.www.BmobObject.Object.PicInfo;
 import com.refresh.www.BmobObject.Object.UserInfo;
 import com.refresh.www.FaceUtils.https.FaceHttpsRequest;
 import com.refresh.www.FaceUtils.utils.ImageSaveUtil;
-import com.refresh.www.OtherUtils.FileUtils.FileUtils;
 import com.refresh.www.OtherUtils.TimeUtils.TimeUtils;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
 import com.refresh.www.UiShowUtils.PopWindowMessage;
@@ -42,8 +40,7 @@ public class BmobHttps {
             @Override
             public void done(BmobException e) {
                 if (e == null) {
-                    PopMessageUtil.Log("上传文件成功:" + bmobFile.getFileUrl());
-                    FileUtils.deleteFace(file);
+                    PopMessageUtil.Log("[1]上传文件到Bmob平台成功:" + bmobFile.getFileUrl());
                     if (isRegister)
                         UserRegister(activity,bmobFile.getFileUrl(),CustormerID);
                     else
@@ -64,7 +61,7 @@ public class BmobHttps {
     /***********************************************************************************************
      * * 功能说明：关联用户在Bomb后台创建用户
      **********************************************************************************************/
-    private static void UserRegister(final Activity activity,String FileUrl,String CustormerID){
+    private static void UserRegister(final MainActivity activity,String FileUrl, final String CustormerID){
         PopMessageUtil.Loading(activity, "Member association");
 
         UserInfo userInfo = new UserInfo();
@@ -77,9 +74,9 @@ public class BmobHttps {
             @Override
             public void done(String OBJECTID, BmobException e) {
                 if (e == null) {
-                    PopMessageUtil.Log("创建用户成功!" + OBJECTID);
+                    PopMessageUtil.Log("[2]Bmob云平台创建用户成功!" + OBJECTID);
                     PopMessageUtil.showToastShort("Member association success!");
-                    FaceHttpsRequest.UploadBaiduYun(OBJECTID);
+                    FaceHttpsRequest.UploadBaiduYun(OBJECTID,CustormerID);
                 } else {
                     PopMessageUtil.CloseLoading();
                     PopWindowMessage.PopWinMessage(activity, "Member association error!", "error=" + e.getMessage() + "," + e.getErrorCode(), "error");
