@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.refresh.www.Activity.MainActivity;
@@ -14,6 +14,7 @@ import com.refresh.www.OtherUtils.HttpxUtils.ImagexUtils;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,8 +54,8 @@ public class PicAdapter extends BaseAdapter {
 
     private static class ViewHolder {
         TextView item_createTime_txt;
-        LinearLayout item_Pic_layout;
-        ImageView item_pic_image;
+        RelativeLayout item_Pic_layout;
+        ImageView item_pic_image,item_new_image;
     }
 
     @Override
@@ -66,21 +67,20 @@ public class PicAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.item_pic, null);
             viewHolder.item_createTime_txt = (TextView) convertView.findViewById(R.id.item_createTime_txt);
             viewHolder.item_pic_image = (ImageView) convertView.findViewById(R.id.item_pic_image);
-            viewHolder.item_Pic_layout = (LinearLayout) convertView.findViewById(R.id.item_Pic_layout);
+            viewHolder.item_new_image = (ImageView) convertView.findViewById(R.id.item_new_image);
+            viewHolder.item_Pic_layout = (RelativeLayout) convertView.findViewById(R.id.item_Pic_layout);
             convertView.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) convertView.getTag();
         //---------------获取最新数据--------------//
         viewHolder.item_createTime_txt.setText(picInfoList.get(position).getCreateTime());
+        if(position == 0)
+            viewHolder.item_new_image.setVisibility(View.VISIBLE);
+        else
+            viewHolder.item_new_image.setVisibility(View.GONE);
         ImagexUtils.displayGifForUrl(viewHolder.item_pic_image,
                 picInfoList.get(position).getUrl() == null ? "http://eoptask-file-img.wityun.com/eoptask/o2/p61/t1495/nopic.jpg" : picInfoList.get(position).getUrl());
-        //----------------点击事件-----------------//
-        viewHolder.item_Pic_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopMessageUtil.showToastShort("点击图片");
-            }
-        });
+
         return convertView;
     }
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,12 +27,11 @@ import com.tencent.smtt.sdk.WebViewClient;
 public class MainActivity extends Activity {
     public com.tencent.smtt.sdk.WebView webView;
     //*********照片墙**********//
-    public RelativeLayout userInfo_layout;
+    public RelativeLayout userInfo_layout,ShowLoading_layout;
     public LinearLayout MainFunction_layout;
     public TextView picNumber_txt;
     public HorizontalListView picListview;
     public PicAdapter picAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
 
     private void InitUi() {
         userInfo_layout = (RelativeLayout) findViewById(R.id.userInfo_layout);
+        ShowLoading_layout = (RelativeLayout) findViewById(R.id.ShowLoading_layout);
         MainFunction_layout = (LinearLayout) findViewById(R.id.MainFunction_layout);
         webView = (com.tencent.smtt.sdk.WebView) findViewById(R.id.webView);
         picNumber_txt   = (TextView) findViewById(R.id.picNumber_txt);
@@ -51,6 +52,13 @@ public class MainActivity extends Activity {
         picListview.setLayoutAnimation(AnimationUtil.getAnimationController());               //添加切换动画
         picAdapter = new PicAdapter(this);
         picListview.setAdapter(picAdapter);
+        picListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                BmobHttps.DelSelectUser(MainActivity.this,position);
+                return false;
+            }
+        });
     }
 
     /***********************************************************************************************
@@ -59,7 +67,7 @@ public class MainActivity extends Activity {
     private void InitH5Web() {
         H5WebviewUtils.InitH5WebViewSettingMethod(MainActivity.this, webView);
         WebviewDealWork();
-        webView.loadUrl(PublicUrl.HomeUrl);
+        LoadWebview(PublicUrl.HomeUrl);
     }
 
     /***********************************************************************************************
@@ -73,7 +81,7 @@ public class MainActivity extends Activity {
                 PopMessageUtil.Log("内部加载" + url);
                 view.loadUrl(url);
                 if(url.compareTo(PublicUrl.ChooseShopUrl)==0){
-                    PopMessageUtil.showToastLong("请选择所属店铺!");
+                    PopMessageUtil.showToastLong("Please select the store address!");
                     webView.setVisibility(View.VISIBLE);
                     MainFunction_layout.setVisibility(View.GONE);
                 }
@@ -82,10 +90,13 @@ public class MainActivity extends Activity {
                     MainFunction_layout.setVisibility(View.VISIBLE);
                     webView.setVisibility(View.GONE);
                 }
-                else if(url.contains(PublicUrl.FindCustomerIDUrl)==true){//&&BindFaceState==true
+                else if(url.contains(PublicUrl.FindCustomerIDUrl)==true){
                     String CustmerID = url.substring(url.indexOf("=")+1,url.length());
                     PopMessageUtil.Log(CustmerID);
-                    FaceRegisterDialog.showRegisterDialog(MainActivity.this, CustmerID);
+                    if(BindFaceState==true)
+                        FaceRegisterDialog.showRegisterDialog(MainActivity.this, CustmerID);
+                    else
+                        BmobHttps.CheckCustoremerID(MainActivity.this, CustmerID);
                 }
                 return true;
             }
@@ -100,10 +111,20 @@ public class MainActivity extends Activity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress >= 80) {
+                    ShowLoading_layout.setVisibility(View.GONE);
                     webView.setVisibility(View.VISIBLE);
                 }
             }
         });
+    }
+
+    /***********************************************************************************************
+     * * 功能说明：加载新网页
+     **********************************************************************************************/
+    public void LoadWebview(String url) {
+        webView.setVisibility(View.GONE);
+        ShowLoading_layout.setVisibility(View.VISIBLE);
+        webView.loadUrl(url);
     }
 
     /***********************************************************************************************
@@ -127,8 +148,7 @@ public class MainActivity extends Activity {
      **********************************************************************************************/
     public void ClickMainAppointment(View view){
         MainFunction_layout.setVisibility(View.GONE);
-        webView.setVisibility(View.VISIBLE);
-        webView.loadUrl(PublicUrl.CalendarUrl);
+        LoadWebview(PublicUrl.CalendarUrl);
     }
 
     /***********************************************************************************************
@@ -136,8 +156,7 @@ public class MainActivity extends Activity {
      **********************************************************************************************/
     public void ClickMainManagement(View view){
         MainFunction_layout.setVisibility(View.GONE);
-        webView.setVisibility(View.VISIBLE);
-        webView.loadUrl(PublicUrl.SearchCustomersUrl);
+        LoadWebview(PublicUrl.SearchCustomersUrl);
     }
 
     /***********************************************************************************************
@@ -152,10 +171,9 @@ public class MainActivity extends Activity {
             if (resultCode == RESULT_FIRST_USER) {
                 //用户未绑定   关联用户
                 MainFunction_layout.setVisibility(View.GONE);
-                webView.setVisibility(View.VISIBLE);
-                webView.loadUrl(PublicUrl.SearchCustomersUrl);
+                LoadWebview(PublicUrl.SearchCustomersUrl);
                 BindFaceState = true;
-                PopMessageUtil.showToastLong("请在页面中搜索该会员");
+                PopMessageUtil.showToastLong("Please search for the member on the web page");
             }
             else if(resultCode == RESULT_OK){
                 //面部识别成功

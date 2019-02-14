@@ -25,7 +25,6 @@ public class FaceRegisterDialog {
     private static CircleImageView avatar_iv;
     private static String facePath,CustmerID;
 
-
     public static void showRegisterDialog(MainActivity context,String CUSTMERID) {
         CustmerID = CUSTMERID;
         activity = context;
@@ -56,10 +55,11 @@ public class FaceRegisterDialog {
         if (mHeadBmp != null)
             avatar_iv.setImageBitmap(mHeadBmp);
         else{
-            PopMessageUtil.showToastShort("加载图片失败!");
+            PopMessageUtil.showToastShort("Loading the image failed!");
             activity.finish();
         }
     }
+
     /********************************************************************
      * * 功能说明： 点击开通人脸
      ********************************************************************/
@@ -70,6 +70,7 @@ public class FaceRegisterDialog {
             FaceHttpsRequest.HttpRegisterByFace(activity, facePath, CustmerID);
         }
     }
+
     /********************************************************************
      * * 功能说明： 点击取消开通人脸
      ********************************************************************/

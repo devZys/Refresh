@@ -117,7 +117,7 @@ public class BaseApplication extends Application {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        PopMessageUtil.showToastShort("人脸识别启动成功");
+                        PopMessageUtil.showToastShort("Face recognition started successfully");
                     }
                 });
             }

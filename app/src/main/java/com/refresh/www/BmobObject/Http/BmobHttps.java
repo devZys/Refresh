@@ -36,14 +36,13 @@ public class BmobHttps {
     public static void LoadingFacePhotoToBomb(final MainActivity activity,final String CustormerID,final boolean isRegister) {
         final File file = new File(ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg"));
         if (!file.exists()) return;
-        PopMessageUtil.Loading(activity,"更新中");
+        PopMessageUtil.Loading(activity,"Updating");
         final BmobFile bmobFile = new BmobFile(file);
         bmobFile.uploadblock(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
                 if (e == null) {
                     PopMessageUtil.Log("上传文件成功:" + bmobFile.getFileUrl());
-                    PopMessageUtil.showToastShort("图片上传成功!");
                     FileUtils.deleteFace(file);
                     if (isRegister)
                         UserRegister(activity,bmobFile.getFileUrl(),CustormerID);
@@ -51,7 +50,7 @@ public class BmobHttps {
                         UpdataUserInfo(activity,TimeUtils.getStandardTime(), bmobFile.getFileUrl(),CustormerID);
                 } else {
                     PopMessageUtil.Log("上传文件失败：" + e.getMessage());
-                    PopMessageUtil.showToastShort("图片上传失败!");
+                    PopMessageUtil.showToastShort("Image upload failed!");
                 }
             }
 
@@ -66,7 +65,7 @@ public class BmobHttps {
      * * 功能说明：关联用户在Bomb后台创建用户
      **********************************************************************************************/
     private static void UserRegister(final Activity activity,String FileUrl,String CustormerID){
-        PopMessageUtil.Loading(activity, "关联会员中");
+        PopMessageUtil.Loading(activity, "Member association");
 
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName("");
@@ -79,12 +78,35 @@ public class BmobHttps {
             public void done(String OBJECTID, BmobException e) {
                 if (e == null) {
                     PopMessageUtil.Log("创建用户成功!" + OBJECTID);
-                    PopMessageUtil.showToastShort("会员关联成功!");
+                    PopMessageUtil.showToastShort("Member association success!");
                     FaceHttpsRequest.UploadBaiduYun(OBJECTID);
                 } else {
                     PopMessageUtil.CloseLoading();
-                    PopWindowMessage.PopWinMessage(activity, "关联用户失败!", "失败原因=" + e.getMessage() + "," + e.getErrorCode(), "error");
+                    PopWindowMessage.PopWinMessage(activity, "Member association error!", "error=" + e.getMessage() + "," + e.getErrorCode(), "error");
                 }
+            }
+        });
+    }
+
+    public static void CheckCustoremerID(final MainActivity activity,final  String CUSTORMERID){
+        PopMessageUtil.Loading(activity, "Finding members");
+
+        BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
+        query.addWhereEqualTo("CustormerId", CUSTORMERID);
+        query.findObjects(new FindListener<UserInfo>() {
+            @Override
+            public void done(List<UserInfo> list, BmobException e) {
+                PopMessageUtil.CloseLoading();
+                if (e == null) {
+                    if (list.size() != 0) {
+                        PopMessageUtil.Log("查询成功!" + list.size() + "条数据");
+                        USERINFO = list.get(0);
+                        ShowCustormerPic(activity,CUSTORMERID);
+                    } else {
+                        PopMessageUtil.showToastShort("Can't find the member");
+                    }
+                } else
+                    PopMessageUtil.showToastShort("Query failed" + e.getMessage() + "," + e.getErrorCode());
             }
         });
     }
@@ -93,7 +115,7 @@ public class BmobHttps {
      * * 功能说明：查询会员信息
      **********************************************************************************************/
     public static void CheckAndUploadByCustormerId(final MainActivity activity, final String CUSTOMERID) {
-        PopMessageUtil.Log("查詢用戶，CID="+CUSTOMERID);
+        PopMessageUtil.Log("查詢用戶，CID=" + CUSTOMERID);
         BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
         query.addWhereEqualTo("CustormerId", CUSTOMERID);
         query.findObjects(new FindListener<UserInfo>() {
@@ -104,22 +126,21 @@ public class BmobHttps {
                         PopMessageUtil.Log("查询成功!" + list.size() + "条数据");
                         //-----用户数据拉取-----//
                         USERINFO = list.get(0);
-                        LoadingFacePhotoToBomb(activity,CUSTOMERID,false);
+                        LoadingFacePhotoToBomb(activity, CUSTOMERID, false);
                     } else {
-                        PopMessageUtil.showToastShort("查询不到该号码会员");
+                        PopMessageUtil.showToastShort("Can't find the member");
                     }
                 } else
-                    PopMessageUtil.showToastShort("查询失败" + e.getMessage() + "," + e.getErrorCode());
+                    PopMessageUtil.showToastShort("Query failed" + e.getMessage() + "," + e.getErrorCode());
             }
         });
     }
-
 
     /***********************************************************************************************
      * * 功能说明：更新用户新面部信息
      **********************************************************************************************/
     public static void UpdataUserInfo(final MainActivity activity,String nowTime, String fileUrl,final String CustormerID) {
-        USERINFO.getPicList().add(new PicInfo(nowTime, fileUrl));
+        USERINFO.getPicList().add(0, new PicInfo(nowTime, fileUrl));
         UserInfo userinfo = new UserInfo();
         userinfo.setValue("picInfos", USERINFO.getPicList());
         userinfo.update(USERINFO.getObjectId(), new UpdateListener() {
@@ -128,18 +149,59 @@ public class BmobHttps {
                 PopMessageUtil.CloseLoading();
                 if (e == null) {
                     PopMessageUtil.Log("更新成功!");
-                    PopMessageUtil.showToastShort("数据同步成功!");
-                    //=========UI界面显示===========//
-                    activity.MainFunction_layout.setVisibility(View.GONE);
-                    activity.webView.setVisibility(View.VISIBLE);
-                    activity.userInfo_layout.setVisibility(View.VISIBLE);
-                    activity.webView.loadUrl(PublicUrl.FindCustomerIDUrl+CustormerID);
-
-                    activity.picNumber_txt.setText(USERINFO.getPicList().size() + "pcs");
-                    activity.picAdapter.UpdataPicInfo(USERINFO.getPicList());
+                    PopMessageUtil.showToastShort("Data synchronization succeeded!");
+                    ShowCustormerPic(activity,CustormerID);
                 } else {
                     PopMessageUtil.Log("失败：" + e.getMessage() + "," + e.getErrorCode());
-                    PopMessageUtil.showToastShort("数据同步失败!");
+                    PopMessageUtil.showToastShort("Data synchronization failed!");
+                }
+            }
+        });
+    }
+
+    /***********************************************************************************************
+     * * 功能说明：显示用户人像画册
+     **********************************************************************************************/
+    public static void ShowCustormerPic(final MainActivity activity,final String CustormerID){
+        activity.MainFunction_layout.setVisibility(View.GONE);
+        activity.userInfo_layout.setVisibility(View.VISIBLE);
+        activity.LoadWebview(PublicUrl.FindCustomerIDUrl + CustormerID);
+
+        activity.picNumber_txt.setText(USERINFO.getPicList().size() + "pcs");
+        activity.picAdapter.UpdataPicInfo(USERINFO.getPicList());
+    }
+
+    public static void DelSelectUser(final MainActivity activity, final int Postion){
+        PopMessageUtil.Loading(activity, "Deleting image");
+        PopMessageUtil.Log("删除文件"+USERINFO.getPicList().get(Postion).getCreateTime());
+        //云后台删除文件
+        BmobFile file = new BmobFile();
+        file.setUrl(USERINFO.getPicList().get(Postion).getUrl());//此url是上传文件成功之后通过bmobFile.getUrl()方法获取的。
+        file.delete(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    USERINFO.getPicList().remove(Postion);
+                    UserInfo userinfo = new UserInfo();
+                    userinfo.setValue("picInfos", USERINFO.getPicList());
+                    userinfo.update(USERINFO.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            PopMessageUtil.CloseLoading();
+                            if (e == null) {
+                                PopMessageUtil.showToastShort("successfully deleted!");
+                                activity.picNumber_txt.setText(USERINFO.getPicList().size() + "pcs");
+                                activity.picAdapter.UpdataPicInfo(USERINFO.getPicList());
+                            } else {
+                                PopMessageUtil.Log("失败：" + e.getMessage() + "," + e.getErrorCode());
+                                PopMessageUtil.showToastShort("Data deletion failed! (Cloud data)");
+                            }
+                        }
+                    });
+                } else {
+                    PopMessageUtil.CloseLoading();
+                    PopMessageUtil.Log("失败：" + e.getErrorCode() + "," + e.getMessage());
+                    PopMessageUtil.showToastShort("Data deletion failed!(Cloud file)");
                 }
             }
         });
