@@ -1,8 +1,13 @@
 package com.refresh.www.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -23,6 +28,10 @@ import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends Activity {
     public com.tencent.smtt.sdk.WebView webView;
@@ -139,8 +148,39 @@ public class MainActivity extends Activity {
     /***********************************************************************************************
      * * 功能说明：人脸面部识别
      **********************************************************************************************/
+    private static final int CAMERA_OK = 999;
+    private static final int SDCARD_OK = 911;
     public void ClickMainFaceIdentify(View view){
-        SwitchUtil.switchActivity(MainActivity.this, DetectLoginActivity.class).switchToForResult(FACE_USER);
+        CheckPermission();
+    }
+
+    private void CheckPermission(){
+        if(Build.VERSION.SDK_INT >= 23) {
+            //存储权限
+            List<String> permissionStrs = new ArrayList<>();
+
+            int hasWriteSdcardPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if(hasWriteSdcardPermission != PackageManager.PERMISSION_GRANTED)
+                permissionStrs.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            int hasCameraPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
+            if(hasCameraPermission != PackageManager.PERMISSION_GRANTED)
+                permissionStrs.add(Manifest.permission.CAMERA);
+
+            String[] stringArray = permissionStrs.toArray(new String[0]);
+            if (permissionStrs.size() > 0) {
+                requestPermissions(stringArray, SDCARD_OK);
+                return;
+            }
+            else{
+                if(ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+                    this.requestPermissions(new String[]{android.Manifest.permission.CAMERA}, CAMERA_OK);
+                else
+                    SwitchUtil.switchActivity(MainActivity.this, DetectLoginActivity.class).switchToForResult(FACE_USER);
+            }
+        }
+        else
+            SwitchUtil.switchActivity(MainActivity.this, DetectLoginActivity.class).switchToForResult(FACE_USER);
     }
 
     /***********************************************************************************************
@@ -179,8 +219,29 @@ public class MainActivity extends Activity {
                 //面部识别成功
                 OBJECTID = intent.getStringExtra("ObjectId");
                 CUSTORMERID = intent.getStringExtra("CustormerId");
+                PopMessageUtil.Loading(this,"Querying user");
                 BmobHttps.CheckAndUploadByCustormerId(this, CUSTORMERID);
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        PopMessageUtil.Log("notifyPermissionsChange");
+        if(requestCode == CAMERA_OK){
+            if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                SwitchUtil.switchActivity(MainActivity.this, DetectLoginActivity.class).switchToForResult(FACE_USER);
+            else
+                PopMessageUtil.showToastShort("请手动打开相机权限");
+        }
+        else if(requestCode == SDCARD_OK){
+            //可以遍历每个权限设置情况
+            if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+                //这里写你需要相关权限的操作
+                PopMessageUtil.showToastLong("输入相关存储权限!");
+            }
+            else
+                PopMessageUtil.showToastShort("请手动打开存储权限");
         }
     }
 }

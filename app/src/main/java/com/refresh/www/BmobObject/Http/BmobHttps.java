@@ -34,7 +34,7 @@ public class BmobHttps {
     public static void LoadingFacePhotoToBomb(final MainActivity activity,final String CustormerID,final boolean isRegister) {
         final File file = new File(ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg"));
         if (!file.exists()) return;
-        PopMessageUtil.Loading(activity,"Updating");
+        PopMessageUtil.Loading(activity, "Updating");
         final BmobFile bmobFile = new BmobFile(file);
         bmobFile.uploadblock(new UploadFileListener() {
             @Override
@@ -42,9 +42,9 @@ public class BmobHttps {
                 if (e == null) {
                     PopMessageUtil.Log("[1]上传文件到Bmob平台成功:" + bmobFile.getFileUrl());
                     if (isRegister)
-                        UserRegister(activity,bmobFile.getFileUrl(),CustormerID);
+                        UserRegister(activity, bmobFile.getFileUrl(), CustormerID);
                     else
-                        UpdataUserInfo(activity,TimeUtils.getStandardTime(), bmobFile.getFileUrl(),CustormerID);
+                        UpdataUserInfo(activity, TimeUtils.getStandardTime(), bmobFile.getFileUrl(), CustormerID);
                 } else {
                     PopMessageUtil.Log("上传文件失败：" + e.getMessage());
                     PopMessageUtil.showToastShort("Image upload failed!");
@@ -76,7 +76,7 @@ public class BmobHttps {
                 if (e == null) {
                     PopMessageUtil.Log("[2]Bmob云平台创建用户成功!" + OBJECTID);
                     PopMessageUtil.showToastShort("Member association success!");
-                    FaceHttpsRequest.UploadBaiduYun(OBJECTID,CustormerID);
+                    FaceHttpsRequest.UploadBaiduYun(OBJECTID, CustormerID);
                 } else {
                     PopMessageUtil.CloseLoading();
                     PopWindowMessage.PopWinMessage(activity, "Member association error!", "error=" + e.getMessage() + "," + e.getErrorCode(), "error");
@@ -98,7 +98,7 @@ public class BmobHttps {
                     if (list.size() != 0) {
                         PopMessageUtil.Log("查询成功!" + list.size() + "条数据");
                         USERINFO = list.get(0);
-                        ShowCustormerPic(activity,CUSTORMERID);
+                        ShowCustormerPic(activity, CUSTORMERID);
                     } else {
                         PopMessageUtil.showToastShort("Can't find the member");
                     }
@@ -118,6 +118,7 @@ public class BmobHttps {
         query.findObjects(new FindListener<UserInfo>() {
             @Override
             public void done(List<UserInfo> list, BmobException e) {
+
                 if (e == null) {
                     if (list.size() != 0) {
                         PopMessageUtil.Log("查询成功!" + list.size() + "条数据");
@@ -125,10 +126,13 @@ public class BmobHttps {
                         USERINFO = list.get(0);
                         LoadingFacePhotoToBomb(activity, CUSTOMERID, false);
                     } else {
-                        PopMessageUtil.showToastShort("Can't find the member");
+                        PopMessageUtil.CloseLoading();
+                        PopWindowMessage.PopWinMessage(activity, "Warning", "Can't find the member", "warning");
                     }
-                } else
-                    PopMessageUtil.showToastShort("Query failed" + e.getMessage() + "," + e.getErrorCode());
+                } else {
+                    PopMessageUtil.CloseLoading();
+                    PopWindowMessage.PopWinMessage(activity, "error", "Query failed" + e.getMessage() + "," + e.getErrorCode(), "error");
+                }
             }
         });
     }

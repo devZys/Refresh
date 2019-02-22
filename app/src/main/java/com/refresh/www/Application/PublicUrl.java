@@ -4,6 +4,12 @@ package com.refresh.www.Application;
  * Created by yy on 2018/2/26.
  */
 public class PublicUrl {
+    /*
+        账号信息
+        Account:  refreshgroup
+        Username: Liuyang
+        Password: Ly@4631214
+     */
     public final static String USER_AGENT_APPEND=" TxyApp-Android";
     public static String OperatingSystem = "Android";
 
