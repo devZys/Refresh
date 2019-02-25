@@ -48,7 +48,7 @@ public class FaceHttpsRequest {
                 PopMessageUtil.CloseLoading();
                 PopMessageUtil.Log(result.toString());
                 PopMessageUtil.showToastShort("Cloud synchronization completed!");
-                BmobHttps.CheckCustoremerID(activity,CUSTORMERID);
+                BmobHttps.CheckCustoremerID(activity,CUSTORMERID,true);
             }
 
             @Override

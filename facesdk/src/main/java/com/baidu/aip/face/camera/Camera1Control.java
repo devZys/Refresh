@@ -14,7 +14,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
@@ -41,14 +40,10 @@ public class Camera1Control implements ICameraControl {
     private static final int MAX_PREVIEW_SIZE = 2048;
 
     static {
-//        ORIENTATIONS.append(Surface.ROTATION_0, 90);          //手机摄像头
-//        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-//        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-//        ORIENTATIONS.append(Surface.ROTATION_270, 180);
         ORIENTATIONS.append(Surface.ROTATION_0, 0);             //正常横屏摄像头
         ORIENTATIONS.append(Surface.ROTATION_90, 90);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+        ORIENTATIONS.append(Surface.ROTATION_180, 180);
+        ORIENTATIONS.append(Surface.ROTATION_270, 270);
     }
 
     private int displayOrientation = 0;
@@ -70,7 +65,7 @@ public class Camera1Control implements ICameraControl {
     private int preferredHeight = 768;
 
     @ICameraControl.CameraFacing
-    private int cameraFacing = CAMERA_FACING_FRONT;
+    private int cameraFacing = CAMERA_FACING_FRONT;//CAMERA_FACING_FRONT;
 
     private boolean usbCamera = false;
 
@@ -151,7 +146,6 @@ public class Camera1Control implements ICameraControl {
         surfaceTexture = new SurfaceTexture(11);
         parameters.setRotation(0); // TODO
         int rotation = ORIENTATIONS.get(displayOrientation);
-        Log.e("YY", "Rotation=" + rotation);
         camera.setDisplayOrientation(rotation);
         try {
             camera.setPreviewCallback(new Camera.PreviewCallback() {
@@ -318,8 +312,6 @@ public class Camera1Control implements ICameraControl {
             optSize = getOptimalSize(width, height, camera.getParameters().getSupportedPreviewSizes());
 
             parameters.setPreviewSize(optSize.width, optSize.height);
-
-//            camera.setDisplayOrientation(getSurfaceOrientation());
             //            camera.stopPreview();
             try {
                 camera.setParameters(parameters);
@@ -447,4 +439,5 @@ public class Camera1Control implements ICameraControl {
         }
         return retSize;
     }
+
 }

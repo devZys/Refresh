@@ -26,268 +26,282 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/ShowLoading_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:orientation="vertical"
-        android:layout_above="@+id/linearLayout6"
-        android:layout_weight="1"
-        android:visibility="gone"
-        >
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/avi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/AVLoadingIndicatorView.Large"
-            android:visibility="visible"
-            app:indicatorName="BallPulseIndicator"
-            app:indicatorColor="@color/blueRefresh"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
-
-    <com.tencent.smtt.sdk.WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        >
-
-    </com.tencent.smtt.sdk.WebView>
-
-    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/titleGreen"
-        android:id="@+id/userInfo_layout"
-        android:gravity="center_vertical"
-        android:visibility="gone"
-        >
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="0"
-            android:textSize="25dp"
-            android:id="@+id/picNumber_txt"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            />
+        <RelativeLayout
+            android:id="@+id/ShowLoading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:visibility="gone"
+            >
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/AVLoadingIndicatorView.Large"
+                android:visibility="visible"
+                app:indicatorName="BallPulseIndicator"
+                app:indicatorColor="@color/blueRefresh"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
 
-        <com.refresh.www.UiShowUtils.HorizontalListView
-            android:id="@+id/pic_listview"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:divider="#00000000"
-            android:dividerHeight="0dip"
-            ></com.refresh.www.UiShowUtils.HorizontalListView>
+        <com.tencent.smtt.sdk.WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
 
+        </com.tencent.smtt.sdk.WebView>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:background="@color/titleGreen"
+            android:id="@+id/userInfo_layout"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/ShowLoading_layout"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="25dp"
+                android:id="@+id/picNumber_txt"
+                android:layout_alignParentRight="true"
+                />
+
+            <!--<com.refresh.www.UiShowUtils.HorizontalListView-->
+                <!--android:id="@+id/pic_listview"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="200dp"-->
+                <!--android:divider="#00000000"-->
+                <!--android:dividerHeight="0dip"-->
+                <!--></com.refresh.www.UiShowUtils.HorizontalListView>-->
+            <ListView
+                android:id="@+id/pic_listview"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:background="#8fffffff"
+                android:divider="#00000000"
+                android:dividerHeight="0dip"
+                android:listSelector="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:id="@+id/MainFunction_layout"
+            android:visibility="gone"
+            >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right|bottom"
+                    android:onClick="ClickMainFaceIdentify"
+
+                    >
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/parcel_button_bg"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginRight="50dp"
+                        >
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:id="@+id/imageView"
+                            android:src="@drawable/main_face"
+                            android:layout_marginTop="20dp"
+                            />
+
+                        <TextView
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Face recognition"
+                            android:id="@+id/textView8"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/darkRed"
+                            android:textSize="30dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="bottom|left"
+                    android:onClick="ClickMainAppointment"
+                    >
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/parcel_button_bg"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="50dp"
+                        >
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:id="@+id/imageView2"
+                            android:src="@drawable/main_record"
+                            android:layout_marginTop="20dp"
+                            />
+
+                        <TextView
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Appointment"
+                            android:id="@+id/textView9"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/darkRed"
+                            android:textSize="30dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="right|top"
+                    android:onClick="ClickMainManagement"
+                    >
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/parcel_button_bg"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="50dp"
+                        >
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:id="@+id/imageView3"
+                            android:src="@drawable/main_user"
+                            android:layout_marginTop="20dp"
+                            />
+
+                        <TextView
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Member management"
+                            android:id="@+id/textView10"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/darkRed"
+                            android:textSize="30dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="left|top"
+                    >
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/parcel_button_bg"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        >
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:id="@+id/imageView4"
+                            android:src="@drawable/main_set"
+                            android:layout_marginTop="20dp"
+                            />
+
+                        <TextView
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Setting"
+                            android:id="@+id/textView11"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/darkRed"
+                            android:textSize="30dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:id="@+id/MainFunction_layout"
-        android:visibility="gone"
-        >
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            >
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right|bottom"
-                android:onClick="ClickMainFaceIdentify"
-
-                >
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/parcel_button_bg"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginRight="50dp"
-                    >
-
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:id="@+id/imageView"
-                        android:src="@drawable/main_face"
-                        android:layout_marginTop="20dp"
-                        />
-
-                    <TextView
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Face recognition"
-                        android:id="@+id/textView8"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/darkRed"
-                        android:textSize="30dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginRight="50dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="bottom|left"
-                android:onClick="ClickMainAppointment"
-                >
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/parcel_button_bg"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="50dp"
-                    >
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:id="@+id/imageView2"
-                        android:src="@drawable/main_record"
-                        android:layout_marginTop="20dp"
-                        />
-
-                    <TextView
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Appointment"
-                        android:id="@+id/textView9"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/darkRed"
-                        android:textSize="30dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginRight="50dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            >
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="right|top"
-                android:onClick="ClickMainManagement"
-                >
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/parcel_button_bg"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="50dp"
-                    >
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:id="@+id/imageView3"
-                        android:src="@drawable/main_user"
-                        android:layout_marginTop="20dp"
-                        />
-
-                    <TextView
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Member management"
-                        android:id="@+id/textView10"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/darkRed"
-                        android:textSize="30dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginRight="50dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="left|top"
-                >
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@drawable/parcel_button_bg"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="50dp"
-                    >
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:id="@+id/imageView4"
-                        android:src="@drawable/main_set"
-                        android:layout_marginTop="20dp"
-                        />
-
-                    <TextView
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Setting"
-                        android:id="@+id/textView11"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/darkRed"
-                        android:textSize="30dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginRight="50dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

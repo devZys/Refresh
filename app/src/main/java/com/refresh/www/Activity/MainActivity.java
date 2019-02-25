@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,7 +21,6 @@ import com.refresh.www.BmobObject.Http.BmobHttps;
 import com.refresh.www.H5WebviewUtils.H5WebviewUtils;
 import com.refresh.www.OtherUtils.AnimationUtil.AnimationUtil;
 import com.refresh.www.R;
-import com.refresh.www.UiShowUtils.HorizontalListView;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
 import com.refresh.www.UiShowUtils.SwitchUtil;
 import com.tencent.smtt.export.external.interfaces.SslError;
@@ -32,15 +32,17 @@ import com.tencent.smtt.sdk.WebViewClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class MainActivity extends Activity {
     public com.tencent.smtt.sdk.WebView webView;
-    //*********照片墙**********//
-    public RelativeLayout userInfo_layout,ShowLoading_layout;
-    public LinearLayout MainFunction_layout;
+    public RelativeLayout ShowLoading_layout;
+    public LinearLayout MainFunction_layout,userInfo_layout;
     public TextView picNumber_txt;
-    public HorizontalListView picListview;
+    public ListView picListview;
     public PicAdapter picAdapter;
+    private SweetAlertDialog sweetAlertTipeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +53,43 @@ public class MainActivity extends Activity {
     }
 
     private void InitUi() {
-        userInfo_layout = (RelativeLayout) findViewById(R.id.userInfo_layout);
+        userInfo_layout = (LinearLayout) findViewById(R.id.userInfo_layout);
         ShowLoading_layout = (RelativeLayout) findViewById(R.id.ShowLoading_layout);
         MainFunction_layout = (LinearLayout) findViewById(R.id.MainFunction_layout);
         webView = (com.tencent.smtt.sdk.WebView) findViewById(R.id.webView);
         picNumber_txt   = (TextView) findViewById(R.id.picNumber_txt);
         //===============Listview================//
-        picListview = (HorizontalListView) findViewById(R.id.pic_listview);
+        picListview = (ListView) findViewById(R.id.pic_listview);
         picListview.setLayoutAnimation(AnimationUtil.getAnimationController());               //添加切换动画
         picAdapter = new PicAdapter(this);
         picListview.setAdapter(picAdapter);
         picListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                BmobHttps.DelSelectUser(MainActivity.this,position);
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                sweetAlertTipeDialog = new SweetAlertDialog(MainActivity.this,3);
+                sweetAlertTipeDialog
+                        .setTitleText("Delete image")
+                        .setContentText("Are you sure to delete this photo?")
+                        .setConfirmText("yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sw) {
+                                sweetAlertTipeDialog.cancel();
+                                sweetAlertTipeDialog = null;
+                                BmobHttps.DelSelectUser(MainActivity.this,position);
+                            }
+                        })
+                        .setCancelText("no")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertTipeDialog.cancel();
+                                sweetAlertTipeDialog = null;
+                            }
+                        })
+                        .changeAlertType(3);
+                sweetAlertTipeDialog.setCanceledOnTouchOutside(true);
+                sweetAlertTipeDialog.show();
                 return false;
             }
         });
@@ -83,6 +108,7 @@ public class MainActivity extends Activity {
      * * 功能说明：H5主要工作
      **********************************************************************************************/
     private boolean firstLogin = true;
+    private boolean reLogin = false;
     private void WebviewDealWork() {
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -94,6 +120,14 @@ public class MainActivity extends Activity {
                     webView.setVisibility(View.VISIBLE);
                     MainFunction_layout.setVisibility(View.GONE);
                 }
+                else if(url.contains(PublicUrl.ReLoginUrl)==true&&reLogin == false){
+                    reLogin = true;
+                    PopMessageUtil.showToastLong("Please login again!");
+                }
+                else if(url.compareTo(PublicUrl.LoginUrl)==0&&reLogin==true){
+                    reLogin = false;
+                    view.loadUrl(PublicUrl.ChooseShopUrl);
+                }
                 else if(url.compareTo(PublicUrl.CalendarUrl)==0&&firstLogin==true){
                     firstLogin = false;
                     MainFunction_layout.setVisibility(View.VISIBLE);
@@ -101,11 +135,11 @@ public class MainActivity extends Activity {
                 }
                 else if(url.contains(PublicUrl.FindCustomerIDUrl)==true){
                     String CustmerID = url.substring(url.indexOf("=")+1,url.length());
-                    PopMessageUtil.Log(CustmerID);
+                    PopMessageUtil.Log("URL解析用户ID="+CustmerID);
                     if(BindFaceState==true)
                         FaceRegisterDialog.showRegisterDialog(MainActivity.this, CustmerID);
                     else
-                        BmobHttps.CheckCustoremerID(MainActivity.this, CustmerID);
+                        BmobHttps.CheckCustoremerID(MainActivity.this, CustmerID,false);
                 }
                 return true;
             }

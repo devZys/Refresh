@@ -19,6 +19,8 @@ public class PublicUrl {
     public static String ChooseShopUrl = "https://app.secure-booker.com/App/BrandAdmin/Spas/SearchSpas.aspx";
     public static String FindCustomerIDUrl = "https://app.secure-booker.com/App/SpaAdmin/Customers/EditCustomer/Summary.aspx?CustomerID=";
     public static String CalendarUrl = "https://app.secure-booker.com/App/SpaAdmin/Appointments/Calendar.aspx";
+    public static String ReLoginUrl = "https://signin.booker.com/auth/i/login?id=";
+    public static String LoginUrl = "https://app.secure-booker.com/App/Admin/Login.aspx";
     //=================人脸识别=================//
     public static String apiKey = "GlujiTqgKtUzZg6PIaa7Qfke";
     public static String secretKey = "dxE3P6Ev65L3CvdFalM3YQka9xesUS2n";

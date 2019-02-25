@@ -28,10 +28,11 @@ import cn.bmob.v3.listener.UploadFileListener;
  */
 public class BmobHttps {
     public static UserInfo USERINFO;
+
     /***********************************************************************************************
      * * 功能说明：用户头像上传 Bomb云平台
      **********************************************************************************************/
-    public static void LoadingFacePhotoToBomb(final MainActivity activity,final String CustormerID,final boolean isRegister) {
+    public static void LoadingFacePhotoToBomb(final MainActivity activity, final String CustormerID, final boolean isRegister) {
         final File file = new File(ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg"));
         if (!file.exists()) return;
         PopMessageUtil.Loading(activity, "Updating");
@@ -61,7 +62,7 @@ public class BmobHttps {
     /***********************************************************************************************
      * * 功能说明：关联用户在Bomb后台创建用户
      **********************************************************************************************/
-    private static void UserRegister(final MainActivity activity,String FileUrl, final String CustormerID){
+    private static void UserRegister(final MainActivity activity, String FileUrl, final String CustormerID) {
         PopMessageUtil.Loading(activity, "Member association");
 
         UserInfo userInfo = new UserInfo();
@@ -85,9 +86,8 @@ public class BmobHttps {
         });
     }
 
-    public static void CheckCustoremerID(final MainActivity activity,final  String CUSTORMERID){
+    public static void CheckCustoremerID(final MainActivity activity, final String CUSTORMERID,final boolean isLoading) {
         PopMessageUtil.Loading(activity, "Finding members");
-
         BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
         query.addWhereEqualTo("CustormerId", CUSTORMERID);
         query.findObjects(new FindListener<UserInfo>() {
@@ -98,7 +98,7 @@ public class BmobHttps {
                     if (list.size() != 0) {
                         PopMessageUtil.Log("查询成功!" + list.size() + "条数据");
                         USERINFO = list.get(0);
-                        ShowCustormerPic(activity, CUSTORMERID);
+                        ShowCustormerPic(activity, CUSTORMERID,isLoading);
                     } else {
                         PopMessageUtil.showToastShort("Can't find the member");
                     }
@@ -118,7 +118,6 @@ public class BmobHttps {
         query.findObjects(new FindListener<UserInfo>() {
             @Override
             public void done(List<UserInfo> list, BmobException e) {
-
                 if (e == null) {
                     if (list.size() != 0) {
                         PopMessageUtil.Log("查询成功!" + list.size() + "条数据");
@@ -140,7 +139,7 @@ public class BmobHttps {
     /***********************************************************************************************
      * * 功能说明：更新用户新面部信息
      **********************************************************************************************/
-    public static void UpdataUserInfo(final MainActivity activity,String nowTime, String fileUrl,final String CustormerID) {
+    public static void UpdataUserInfo(final MainActivity activity, String nowTime, String fileUrl, final String CustormerID) {
         USERINFO.getPicList().add(0, new PicInfo(nowTime, fileUrl));
         UserInfo userinfo = new UserInfo();
         userinfo.setValue("picInfos", USERINFO.getPicList());
@@ -151,7 +150,7 @@ public class BmobHttps {
                 if (e == null) {
                     PopMessageUtil.Log("更新成功!");
                     PopMessageUtil.showToastShort("Data synchronization succeeded!");
-                    ShowCustormerPic(activity,CustormerID);
+                    ShowCustormerPic(activity, CustormerID,true);
                 } else {
                     PopMessageUtil.Log("失败：" + e.getMessage() + "," + e.getErrorCode());
                     PopMessageUtil.showToastShort("Data synchronization failed!");
@@ -163,18 +162,18 @@ public class BmobHttps {
     /***********************************************************************************************
      * * 功能说明：显示用户人像画册
      **********************************************************************************************/
-    public static void ShowCustormerPic(final MainActivity activity,final String CustormerID){
+    public static void ShowCustormerPic(final MainActivity activity, final String CustormerID, boolean isLoading) {
         activity.MainFunction_layout.setVisibility(View.GONE);
         activity.userInfo_layout.setVisibility(View.VISIBLE);
-        activity.LoadWebview(PublicUrl.FindCustomerIDUrl + CustormerID);
-
-        activity.picNumber_txt.setText(USERINFO.getPicList().size() + "pcs");
+        if (isLoading)
+            activity.LoadWebview(PublicUrl.FindCustomerIDUrl + CustormerID);
+        activity.picNumber_txt.setText("Total " + USERINFO.getPicList().size() + " photos");
         activity.picAdapter.UpdataPicInfo(USERINFO.getPicList());
     }
 
-    public static void DelSelectUser(final MainActivity activity, final int Postion){
+    public static void DelSelectUser(final MainActivity activity, final int Postion) {
         PopMessageUtil.Loading(activity, "Deleting image");
-        PopMessageUtil.Log("删除文件"+USERINFO.getPicList().get(Postion).getCreateTime());
+        PopMessageUtil.Log("删除文件" + USERINFO.getPicList().get(Postion).getCreateTime());
         //云后台删除文件
         BmobFile file = new BmobFile();
         file.setUrl(USERINFO.getPicList().get(Postion).getUrl());//此url是上传文件成功之后通过bmobFile.getUrl()方法获取的。
