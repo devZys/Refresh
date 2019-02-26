@@ -152,6 +152,7 @@ public class BaseApplication extends Application {
         tracker.set_isVerifyLive(false);
     }
 
+
 //    public static void setWindowStatusBarColor(Activity activity, int colorResId) {
 //        try {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

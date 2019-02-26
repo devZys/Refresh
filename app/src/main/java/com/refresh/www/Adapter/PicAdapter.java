@@ -9,13 +9,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.refresh.www.Activity.MainActivity;
+import com.refresh.www.Activity.PicShowActivity;
+import com.refresh.www.BmobObject.Http.BmobHttps;
 import com.refresh.www.BmobObject.Object.PicInfo;
 import com.refresh.www.OtherUtils.HttpxUtils.ImagexUtils;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
+import com.refresh.www.UiShowUtils.SwitchUtil;
 
-import java.util.Collections;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by yy on 2019/1/23.
@@ -23,7 +27,7 @@ import java.util.List;
 public class PicAdapter extends BaseAdapter {
     private MainActivity mContext = null;
     private List<PicInfo> picInfoList;
-
+    private SweetAlertDialog sweetAlertTipeDialog;
     public PicAdapter(MainActivity loginActivity) {
         mContext = loginActivity;
     }
@@ -80,7 +84,49 @@ public class PicAdapter extends BaseAdapter {
             viewHolder.item_new_image.setVisibility(View.GONE);
         ImagexUtils.displayGifForUrl(viewHolder.item_pic_image,
                 picInfoList.get(position).getUrl() == null ? "http://eoptask-file-img.wityun.com/eoptask/o2/p61/t1495/nopic.jpg" : picInfoList.get(position).getUrl());
-
+        //---------------响应点击事件---------------//
+        viewHolder.item_Pic_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopMessageUtil.showToastShort("点击"+position+"照片!");
+                SwitchUtil.switchActivity(mContext, PicShowActivity.class)
+                        .addString("NewPicUrl",picInfoList.get(0).getUrl())
+                        .addString("NewPicTime",picInfoList.get(0).getCreateTime())
+                        .addString("SelectPicUrl",picInfoList.get(position).getUrl())
+                        .addString("SelectPicTime",picInfoList.get(position).getCreateTime())
+                        .switchTo();
+            }
+        });
+        viewHolder.item_Pic_layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                sweetAlertTipeDialog = new SweetAlertDialog(mContext,3);
+                sweetAlertTipeDialog
+                        .setTitleText("Delete image")
+                        .setContentText("Are you sure to delete this photo?")
+                        .setConfirmText("yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sw) {
+                                sweetAlertTipeDialog.cancel();
+                                sweetAlertTipeDialog = null;
+                                BmobHttps.DelSelectUser(mContext, position);
+                            }
+                        })
+                        .setCancelText("no")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertTipeDialog.cancel();
+                                sweetAlertTipeDialog = null;
+                            }
+                        })
+                        .changeAlertType(3);
+                sweetAlertTipeDialog.setCanceledOnTouchOutside(true);
+                sweetAlertTipeDialog.show();
+                return false;
+            }
+        });
         return convertView;
     }
 
