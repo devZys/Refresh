@@ -14,12 +14,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.megvii.facepp.api.FacePPApi;
+import com.megvii.facepp.api.IFacePPCallBack;
+import com.megvii.facepp.api.bean.DetectResponse;
 import com.refresh.www.Adapter.PicAdapter;
 import com.refresh.www.Application.PublicUrl;
 import com.refresh.www.BmobObject.Http.BmobHttps;
 import com.refresh.www.FaceUtils.utils.ImageSaveUtil;
 import com.refresh.www.H5WebviewUtils.H5WebviewUtils;
 import com.refresh.www.OtherUtils.AnimationUtil.AnimationUtil;
+import com.refresh.www.OtherUtils.PicUtils.BitmapUtil;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
 import com.refresh.www.UiShowUtils.SwitchUtil;
@@ -266,23 +270,40 @@ public class MainActivity extends Activity {
 
 
     public void PicHttpMethod(){
-        File file = new File( ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg"));
-        byte[] buff = getBytesFromFile(file);
-        String url = "https://api-cn.faceplusplus.com/facepp/v3/detect";
-        HashMap<String, String> map = new HashMap<>();
-        HashMap<String, byte[]> byteMap = new HashMap<>();
-        map.put("api_key", "sDz6x4T8x8bWVCg9HaK5FjkDV1h0fwrx");
-        map.put("api_secret", "aA3CI9AT6XtZzX3SJ3jpkL-G26nBrJGR");
-        map.put("return_landmark", "1");
-        map.put("", "gender,age,smiling,headpose,facequality,blur,eyestatus,emotion,ethnicity,beauty,mouthstatus,eyegaze,skinstatus");
-        byteMap.put("image_file", buff);
-        try{
-            byte[] bacd = post(url, map, byteMap);
-            String str = new String(bacd);
-            PopMessageUtil.Log("人脸返回数据:"+str);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+//        File file = new File( ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg"));
+//        byte[] buff = getBytesFromFile(file);
+//        String url = "https://api-cn.faceplusplus.com/facepp/v3/detect";
+//        HashMap<String, String> map = new HashMap<>();
+//        HashMap<String, byte[]> byteMap = new HashMap<>();
+//        map.put("api_key", "sDz6x4T8x8bWVCg9HaK5FjkDV1h0fwrx");
+//        map.put("api_secret", "aA3CI9AT6XtZzX3SJ3jpkL-G26nBrJGR");
+//        map.put("return_attributes", "gender,age");
+//        byteMap.put("image_file", buff);
+//        try{
+//            byte[] bacd = post(url, map, byteMap);
+//            String str = new String(bacd);
+//            PopMessageUtil.Log("人脸返回数据:"+str);
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        FacePPApi faceppApi = new FacePPApi("sDz6x4T8x8bWVCg9HaK5FjkDV1h0fwrx", "aA3CI9AT6XtZzX3SJ3jpkL-G26nBrJGR");
+        Map<String, String> params = new HashMap<>();
+        params.put("return_attributes", "gender,age");
+        byte[] data = BitmapUtil.File2byte(ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg"));
+
+        faceppApi.detect(params, data,
+                new IFacePPCallBack<DetectResponse>() {
+                    @Override
+                    public void onSuccess(DetectResponse response) {
+                        PopMessageUtil.Log("人脸="+response);
+                    }
+
+                    @Override
+                    public void onFailed(String error) {
+                        PopMessageUtil.Log(error);
+                    }
+                });
     }
 
     private final static int CONNECT_TIME_OUT = 30000;
