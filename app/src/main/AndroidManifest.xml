@@ -53,6 +53,10 @@
             android:name=".Activity.PicShowActivity"
             android:screenOrientation="landscape"
             android:theme="@style/MyTheme" />
+        <activity
+            android:name=".Activity.FaceAnalysisActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyTheme" />
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.refresh.www.BmobContentProvider">

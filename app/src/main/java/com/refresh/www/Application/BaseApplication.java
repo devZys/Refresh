@@ -5,6 +5,7 @@ import android.app.Application;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +38,7 @@ public class BaseApplication extends Application {
         X5Init();
         initFaceLib();
         BmobInit();
+        DealAndroidTakePhoto();
     }
 
     public static BaseApplication getInstance(){
@@ -150,6 +152,12 @@ public class BaseApplication extends Application {
         tracker.set_isCheckQuality(true);
         // 是否进行活体校验
         tracker.set_isVerifyLive(false);
+    }
+
+    private void DealAndroidTakePhoto(){
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
     }
 
 

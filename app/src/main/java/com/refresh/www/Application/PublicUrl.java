@@ -21,18 +21,21 @@ public class PublicUrl {
     public static String CalendarUrl = "https://app.secure-booker.com/App/SpaAdmin/Appointments/Calendar.aspx";
     public static String ReLoginUrl = "https://signin.booker.com/auth/i/login?id=";
     public static String LoginUrl = "https://app.secure-booker.com/App/Admin/Login.aspx";
-    //=================人脸识别=================//
+    /*
+     * 百度人脸识别
+     * 人脸识别 接口 https://aip.baidubce.com/rest/2.0/face/v3/search
+     * 人脸注册 接口 https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add
+     */
     public static String apiKey = "GlujiTqgKtUzZg6PIaa7Qfke";
     public static String secretKey = "dxE3P6Ev65L3CvdFalM3YQka9xesUS2n";
     public static String licenseID = "Refresh-face-android";
     public static String licenseFileName = "idl-license.face-android";
-    /*
-     * <p>
-     * 每个开发者账号只能创建一个人脸库；groupID用于标识人脸库
-     * <p>
-     * 人脸识别 接口 https://aip.baidubce.com/rest/2.0/face/v3/search
-     * 人脸注册 接口 https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add
-     */
     public static String groupID = "Member";
+
+    /*
+     *  Face++人脸分析
+     */
+    public static String FacePlus_apiKey    = "sDz6x4T8x8bWVCg9HaK5FjkDV1h0fwrx";
+    public static String FacePlus_apiSecret = "aA3CI9AT6XtZzX3SJ3jpkL-G26nBrJGR";
 
 }
