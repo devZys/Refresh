@@ -103,7 +103,6 @@ public class FaceAnalysisActivity extends Activity {
         }
     }
 
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

@@ -14,9 +14,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.megvii.facepp.api.FacePPApi;
-import com.megvii.facepp.api.IFacePPCallBack;
-import com.megvii.facepp.api.bean.FaceAnalyzeResponse;
 import com.refresh.www.Adapter.PicAdapter;
 import com.refresh.www.Application.PublicUrl;
 import com.refresh.www.BmobObject.Http.BmobHttps;
@@ -30,11 +27,8 @@ import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class MainActivity extends Activity {
@@ -50,7 +44,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         InitUi();
-//        InitH5Web();
+        InitH5Web();
     }
 
     private void InitUi() {
@@ -255,44 +249,4 @@ public class MainActivity extends Activity {
                 PopMessageUtil.showToastShort("请手动打开存储权限");
         }
     }
-
-
-//    public void PicHttpMethod() {
-//        FacePPApi faceppApi = new FacePPApi("sDz6x4T8x8bWVCg9HaK5FjkDV1h0fwrx", "aA3CI9AT6XtZzX3SJ3jpkL-G26nBrJGR");
-//        Map<String, String> params = new HashMap<>();
-//        params.put("return_attributes", "gender,age");
-//        byte[] data = BitmapUtil.File2byte(ImageSaveUtil.loadCameraBitmapPath("head_tmp.jpg"));
-//
-//        faceppApi.detect(params, data, new IFacePPCallBack<DetectResponse>() {
-//            @Override
-//            public void onSuccess(DetectResponse response) {
-//                PopMessageUtil.Log("人脸=" + response);
-//                PopMessageUtil.Log("Token=" + response.getFaces().get(0).getFace_token());
-//
-//                FaceAnalyzeMethod(response.getFaces().get(0).getFace_token());
-//            }
-//
-//            @Override
-//            public void onFailed(String error) {
-//                PopMessageUtil.Log(error);
-//            }
-//        });
-//    }
-//
-//    private void FaceAnalyzeMethod(String face_token) {
-//        FacePPApi faceppApi = new FacePPApi("sDz6x4T8x8bWVCg9HaK5FjkDV1h0fwrx", "aA3CI9AT6XtZzX3SJ3jpkL-G26nBrJGR");
-//        Map<String, String> params = new HashMap<>();
-//        params.put("face_tokens", face_token);
-//        params.put("return_attributes", "gender,age,smiling,facequality,blur,eyestatus,emotion,ethnicity,beauty,mouthstatus,eyegaze,skinstatus");
-//        faceppApi.faceAnalyze(params, new IFacePPCallBack<FaceAnalyzeResponse>() {
-//            @Override
-//            public void onSuccess(FaceAnalyzeResponse faceAnalyzeResponse) {
-//                PopMessageUtil.Log("人脸分析="+faceAnalyzeResponse);
-//            }
-//            @Override
-//            public void onFailed(String s) {
-//                PopMessageUtil.Log("人脸分析成功!");
-//            }
-//        });
-//    }
 }
