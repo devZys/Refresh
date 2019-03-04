@@ -2,18 +2,23 @@ package com.refresh.www.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 import com.refresh.www.Adapter.PicAdapter;
 import com.refresh.www.Application.PublicUrl;
 import com.refresh.www.BmobObject.Http.BmobHttps;
@@ -27,6 +32,7 @@ import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +51,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         InitUi();
         InitH5Web();
+        CheckUpdata();
     }
 
     private void InitUi() {
@@ -204,6 +211,35 @@ public class MainActivity extends Activity {
      **********************************************************************************************/
     public void ClickMainFaceAiAnalysis(View view){
         SwitchUtil.switchActivity(MainActivity.this,FaceAnalysisActivity.class).switchTo();
+    }
+
+    private void CheckUpdata() {
+        webView.setVisibility(View.GONE);
+        PopMessageUtil.Loading(MainActivity.this, "Version verification");
+        PgyUpdateManager.register(MainActivity.this, new UpdateManagerListener() {
+            @Override
+            public void onNoUpdateAvailable() {
+                PopMessageUtil.CloseLoading();
+                PopMessageUtil.Log("版本是最新!");
+                webView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onUpdateAvailable(String s) {
+                PopMessageUtil.CloseLoading();
+                PopMessageUtil.Log("版本更新=" + s);
+                final AppBean appBean = getAppBeanFromString(s);
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("App Update")
+                        .setMessage("New version V" + appBean.getVersionName() + "\nupdate content" + appBean.getReleaseNote())
+                        .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startDownloadTask(MainActivity.this, appBean.getDownloadURL());
+                            }
+                        }).show();
+            }
+        });
     }
 
     /***********************************************************************************************

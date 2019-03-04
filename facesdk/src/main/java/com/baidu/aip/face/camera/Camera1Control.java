@@ -61,8 +61,8 @@ public class Camera1Control implements ICameraControl {
 //    private int preferredWidth = 1280;
 //    private int preferredHeight = 720;
 
-    private int preferredWidth = 1366;
-    private int preferredHeight = 768;
+    private int preferredWidth = 1920;
+    private int preferredHeight = 1080;
 
     @ICameraControl.CameraFacing
     private int cameraFacing = CAMERA_FACING_FRONT;//CAMERA_FACING_FRONT;

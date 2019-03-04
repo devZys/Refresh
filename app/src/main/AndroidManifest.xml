@@ -26,6 +26,11 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <!--保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 允许程序录制音频 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <!-- 可选-->
+    <uses-permission android:name="android.permission.READ_LOGS" /> <!-- 获取logcat日志 -->
     <application
         android:name=".Application.BaseApplication"
         android:allowBackup="true"
@@ -61,6 +66,10 @@
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.refresh.www.BmobContentProvider">
         </provider>
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="811345066221850b162e4f242dba432d" >
+        </meta-data>
     </application>
 
 </manifest>

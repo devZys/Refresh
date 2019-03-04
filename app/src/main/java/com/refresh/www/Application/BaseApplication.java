@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.baidu.aip.FaceEnvironment;
 import com.baidu.aip.FaceSDKManager;
 import com.baidu.idl.facesdk.FaceTracker;
+import com.pgyersdk.crash.PgyCrashManager;
 import com.refresh.www.FaceUtils.exception.FaceError;
 import com.refresh.www.FaceUtils.model.AccessToken;
 import com.refresh.www.FaceUtils.utils.OnResultListener;
@@ -35,6 +36,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         instance = this;
         x.Ext.init(this);
+        PgyCrashManager.register(this);
         X5Init();
         initFaceLib();
         BmobInit();
