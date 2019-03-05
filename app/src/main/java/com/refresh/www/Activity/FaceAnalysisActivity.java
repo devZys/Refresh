@@ -32,6 +32,7 @@ import com.refresh.www.OtherUtils.TakePhotoUtils.HeadImageChooseDialog;
 import com.refresh.www.OtherUtils.TakePhotoUtils.HeadImageUtil;
 import com.refresh.www.R;
 import com.refresh.www.UiShowUtils.PopMessageUtil;
+import com.refresh.www.UiShowUtils.SwitchUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -90,6 +91,10 @@ public class FaceAnalysisActivity extends Activity {
     public void ClickFaceAnalysisStartMethod(View view) {
         AnalysisLayout.setVisibility(View.GONE);
         HeadImageChooseDialog.ChangeFacePhotoMethod(FaceAnalysisActivity.this);
+    }
+
+    public void ClickFaceAnalysisBackMethod(View view){
+        SwitchUtil.FinishActivity(FaceAnalysisActivity.this);
     }
 
     private void SetProgressView(CircleProgress view,int progressNum){
