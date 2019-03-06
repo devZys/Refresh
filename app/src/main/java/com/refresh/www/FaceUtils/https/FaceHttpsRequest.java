@@ -48,6 +48,7 @@ public class FaceHttpsRequest {
                 PopMessageUtil.CloseLoading();
                 PopMessageUtil.Log(result.toString());
                 PopMessageUtil.showToastShort("Cloud synchronization completed!");
+                activity.BindFaceState = false;             //绑定成功
                 BmobHttps.CheckCustoremerID(activity,CUSTORMERID,true);
             }
 
