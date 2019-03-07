@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -209,8 +210,8 @@ public class MainActivity extends Activity {
     /***********************************************************************************************
      * * 功能说明：人脸AI分析
      **********************************************************************************************/
-    public void ClickMainFaceAiAnalysis(View view){
-        SwitchUtil.switchActivity(MainActivity.this,FaceAnalysisActivity.class).switchTo();
+    public void ClickMainFaceAiAnalysis(View view) {
+        SwitchUtil.switchActivity(MainActivity.this, FaceAnalysisActivity.class).switchTo();
     }
 
     private void CheckUpdata() {
@@ -240,6 +241,26 @@ public class MainActivity extends Activity {
                         }).show();
             }
         });
+    }
+
+    /********************************************************************************************
+     * * 功能说明：重写onKeyDown(keyCode, event)方法 改写物理按键 返回的逻辑
+     ******************************************************************************************/
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            if (webView.canGoBack()) {
+//                webView.goBack();                       //返回上一页面
+//                return true;
+//            } else {
+            webView.setVisibility(View.GONE);
+            userInfo_layout.setVisibility(View.GONE);
+            MainFunction_layout.setVisibility(View.VISIBLE);
+            return true;
+//            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /***********************************************************************************************
