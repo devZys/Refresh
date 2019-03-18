@@ -31,6 +31,8 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- 可选-->
     <uses-permission android:name="android.permission.READ_LOGS" /> <!-- 获取logcat日志 -->
+    <!-- 在 屏幕最顶部显示addview -->
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <application
         android:name=".Application.BaseApplication"
         android:allowBackup="true"
